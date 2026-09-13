@@ -2,22 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mctools.wiki.gd/</loc>
-    <priority>1.00</priority>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mctools.wiki.gd/server-properties.html</loc>
-    <priority>0.80</priority>
+    <loc>https://mctools.wiki.gd/server-properties</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mctools.wiki.gd/motd.html</loc>
-    <priority>0.80</priority>
+    <loc>https://mctools.wiki.gd/motd</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mctools.wiki.gd/java-arguments.html</loc>
-    <priority>0.80</priority>
+    <loc>https://mctools.wiki.gd/java-arguments</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mctools.wiki.gd/mc-checker.html</loc>
-    <priority>0.80</priority>
+    <loc>https://mctools.wiki.gd/mc-checker</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
