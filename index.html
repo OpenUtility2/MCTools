@@ -157,6 +157,106 @@
       color: var(--mc-subtext);
     }
 
+    /* CUSTOM ANIMATED TOOLS ICONS Styles */
+    .card-icon {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      background: rgba(43, 58, 103, 0.15); /* matching dark-blue accent */
+      border: 2px solid var(--mc-border);
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .card:hover .card-icon {
+      background: rgba(184, 168, 208, 0.15); /* glowing light purple */
+      border-color: var(--mc-subtext);
+    }
+
+    /* Base Icon physics */
+    .card-icon i {
+      font-size: 2rem;
+      color: var(--mc-subtext);
+      display: inline-block;
+      transform-origin: center bottom;
+    }
+
+    /* Continuous animated states & hover intensifiers */
+    .card-properties .card-icon i {
+      animation: floatSlide 2.5s infinite ease-in-out;
+    }
+    .card-properties:hover .card-icon i {
+      animation: rapidSlide 0.6s infinite ease-in-out;
+      color: #fff;
+    }
+
+    .card-motd .card-icon i {
+      animation: wiggleHue 3s infinite linear;
+    }
+    .card-motd:hover .card-icon i {
+      animation: spinHues 0.8s infinite linear;
+      color: #ff9cfc;
+    }
+
+    .card-java .card-icon i {
+      animation: subtlePulse 2s infinite ease-in-out;
+    }
+    .card-java:hover .card-icon i {
+      animation: angryPulse 0.5s infinite alternate ease-in-out;
+      color: #8ce1ff;
+    }
+
+    .card-status .card-icon i {
+      animation: signalRadar 2.2s infinite ease-in-out;
+    }
+    .card-status:hover .card-icon i {
+      animation: signalRadarFast 0.8s infinite ease-in-out;
+      color: #92ffd4;
+    }
+
+    /* KEYFRAMES */
+    @keyframes floatSlide {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes rapidSlide {
+      0%, 100% { transform: scaleY(0.95) translateX(0); }
+      50% { transform: scaleY(1.05) translateX(-5px); }
+    }
+
+    @keyframes wiggleHue {
+      0%, 100% { transform: rotate(0) scale(1); filter: hue-rotate(0deg); }
+      50% { transform: rotate(8deg) scale(1.05); filter: hue-rotate(45deg); }
+    }
+    @keyframes spinHues {
+      0% { transform: rotate(0) scale(1.1); filter: hue-rotate(0deg); }
+      100% { transform: rotate(360deg) scale(1.1); filter: hue-rotate(360deg); }
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(0,0,0,0)); }
+      50% { transform: scale(1.1); filter: drop-shadow(0 0 6px var(--mc-subtext)); }
+    }
+    @keyframes angryPulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px #5abaff); }
+      100% { transform: scale(1.2) rotate(5deg); filter: drop-shadow(0 0 8px #5abaff); }
+    }
+
+    @keyframes signalRadar {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 3px var(--mc-subtext)); }
+    }
+    @keyframes signalRadarFast {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-2px) scale(1.2); filter: drop-shadow(0 0 8px #54f3a7); }
+      100% { transform: translateY(0) scale(1); }
+    }
+
     /* Custom MCTools Footer Layout */
     .site-footer {
       background-color: #160e2a;
@@ -338,25 +438,25 @@
           <p class="section-subtitle">Everything you need to configure, generate, and inspect your Minecraft server.</p>
         </div>
         <div class="card-grid">
-          <div class="card">
+          <div class="card card-properties">
             <div class="card-icon"><i class="fas fa-sliders-h"></i></div>
             <h3 class="card-title">Server Properties Editor</h3>
             <p class="card-description">Easily edit and validate your Minecraft server.properties file with a clean and simple interface.</p>
             <a href="/server-properties" class="btn btn-secondary btn-sm">Open Tool <i class="fas fa-arrow-right"></i></a>
           </div>
-          <div class="card">
+          <div class="card card-motd">
             <div class="card-icon"><i class="fas fa-palette"></i></div>
             <h3 class="card-title">MOTD Generator</h3>
             <p class="card-description">Create and preview Minecraft server MOTDs with colors and formatting.</p>
             <a href="/motd" class="btn btn-secondary btn-sm">Open Tool <i class="fas fa-arrow-right"></i></a>
           </div>
-          <div class="card">
+          <div class="card card-java">
             <div class="card-icon"><i class="fas fa-microchip"></i></div>
             <h3 class="card-title">Java Arguments Generator</h3>
             <p class="card-description">Generate suitable Java startup arguments based on your Minecraft server and available RAM.</p>
             <a href="/java-arguments" class="btn btn-secondary btn-sm">Open Tool <i class="fas fa-arrow-right"></i></a>
           </div>
-          <div class="card">
+          <div class="card card-status">
             <div class="card-icon"><i class="fas fa-signal"></i></div>
             <h3 class="card-title">Server Status Checker</h3>
             <p class="card-description">Check real-time status, MOTD, version, and live player count of any Minecraft server.</p>
