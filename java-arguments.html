@@ -175,10 +175,12 @@
       border-radius: 6px;
       padding: 1rem;
       font-family: monospace;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
       word-break: break-all;
       margin-bottom: 1rem;
       color: #7dd3fc;
+      white-space: pre-wrap;
     }
 
     .output-actions {
@@ -459,6 +461,17 @@
       const advancedPanel = document.getElementById('advanced-panel');
       const toggleIcon = document.getElementById('toggle-icon');
 
+      // Add listeners for dynamic regeneration across all controls
+      const formControls = [
+        'server-software', 'java-version', 'performance', 
+        'gc-type', 'opt-nogui', 'opt-vectors', 'opt-largepages', 'opt-preview'
+      ];
+      
+      formControls.forEach(id => {
+        const elem = document.getElementById(id);
+        if (elem) elem.addEventListener('change', generateArguments);
+      });
+
       ramInput.addEventListener('input', (e) => {
         ramDisplay.textContent = `${e.target.value} GB`;
         generateArguments();
@@ -468,6 +481,19 @@
         const isHidden = advancedPanel.style.display === 'none';
         advancedPanel.style.display = isHidden ? 'block' : 'none';
         toggleIcon.className = isHidden ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+      });
+
+      btnGenerate.addEventListener('click', generateArguments);
+
+      btnCopy.addEventListener('click', () => {
+        const textToCopy = argsOutput.textContent;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const origText = btnCopy.innerHTML;
+          btnCopy.innerHTML = `<i class="fas fa-check"></i> Copied!`;
+          setTimeout(() => {
+            btnCopy.innerHTML = origText;
+          }, 2000);
+        });
       });
 
       async function fetchVersions() {
@@ -589,7 +615,7 @@
         const largePages = document.getElementById('opt-largepages').checked;
         const preview = document.getElementById('opt-preview').checked;
 
-        let flags = [];
+        let flags = ['java'];
 
         flags.push(`-Xms${ram}G`);
         flags.push(`-Xmx${ram}G`);
@@ -611,7 +637,7 @@
             '-XX:InitiatingHeapOccupancyPercent=15',
             '-XX:G1MixedGCLiveThresholdPercent=90',
             '-XX:G1RSetUpdatingPauseTimePercent=5',
-            '-XX:SurviorRatio=32',
+            '-XX:SurvivorRatio=32',
             '-XX:+PerfDisableSharedMem',
             '-XX:MaxTenuringThreshold=1'
           );
@@ -624,7 +650,7 @@
         } else if (gc === 'shenandoah') {
           flags.push('-XX:+UseShenandoahGC', '-XX:+UnlockExperimentalVMOptions', '-XX:+AlwaysPreTouch');
         } else if (gc === 'parallel') {
-          flags.push('-XX:+UseParallelGC', '-XX:+AlwaysPreTouch');
+          flags.push('-XX:+UseParallelGC');
         }
 
         if (vectors && javaVer >= 17) {
@@ -639,32 +665,23 @@
           flags.push('--enable-preview');
         }
 
-        const jarName = `${software}.jar`;
-        flags.push(`-jar ${jarName}`);
+        // Jar target determination
+        let jarName = 'server.jar';
+        if (software === 'paper') jarName = 'paper.jar';
+        else if (software === 'spigot') jarName = 'spigot.jar';
+        else if (software === 'fabric') jarName = 'fabric-server-launch.jar';
+        else if (software === 'velocity') jarName = 'velocity.jar';
 
-        if (noGui) {
+        flags.push('-jar', jarName);
+
+        if (noGui && software !== 'velocity') {
           flags.push('--nogui');
         }
 
-        argsOutput.textContent = `java ${flags.join(' ')}`;
+        argsOutput.textContent = flags.join(' ');
       }
 
-      ['server-software', 'java-version', 'performance', 'gc-type', 'opt-nogui', 'opt-vectors', 'opt-largepages', 'opt-preview'].forEach(id => {
-        document.getElementById(id).addEventListener('change', generateArguments);
-      });
-
-      btnCopy.addEventListener('click', () => {
-        navigator.clipboard.writeText(argsOutput.textContent).then(() => {
-          const origText = btnCopy.innerHTML;
-          btnCopy.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          setTimeout(() => {
-            btnCopy.innerHTML = origText;
-          }, 2000);
-        });
-      });
-
-      btnGenerate.addEventListener('click', generateArguments);
-
+      // Initial Fetch on load
       fetchVersions();
     });
   </script>
