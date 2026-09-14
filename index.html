@@ -347,15 +347,14 @@
       border-color: #000;
     }
 
-    .tool-icon-wrap {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
+    /* PIXEL ART ICON STYLING (matching exact look from reference screenshot) */
+    .tool-icon-img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      image-rendering: pixelated;
       flex-shrink: 0;
-      filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5));
+      filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.6));
     }
 
     .tool-info {
@@ -555,7 +554,7 @@
         <h2 class="category-title">CREATE</h2>
         <div class="tools-grid-2col">
           <a href="/motd" class="tool-card">
-            <div class="tool-icon-wrap">🎨</div>
+            <img src="https://minecraft.wiki/images/Painting_JE2_BE2.png" alt="MOTD Icon" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">MOTD Generator</span>
               <span class="tool-desc">Create colored server MOTDs with text formatting.</span>
@@ -563,14 +562,14 @@
           </a>
           <a href="/server-icon-converter" class="tool-card teal-border">
             <div class="badge-new">NEW</div>
-            <div class="tool-icon-wrap">🖼️</div>
+            <img src="https://minecraft.wiki/images/Music_Disc_Otherside.png" alt="Icon Converter" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Server Icon Converter</span>
               <span class="tool-desc">Resize & convert images into 64x64 server icons.</span>
             </div>
           </a>
           <a href="/seed-generator" class="tool-card">
-            <div class="tool-icon-wrap">🌍</div>
+            <img src="https://minecraft.wiki/images/Armor_Stand_(item)_JE1_BE1.png" alt="Seed Generator" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Seed Generator</span>
               <span class="tool-desc">Discover unique biome seeds and world structures.</span>
@@ -578,7 +577,7 @@
           </a>
           <a href="/cape-maker" class="tool-card teal-border">
             <div class="badge-new">NEW</div>
-            <div class="tool-icon-wrap">🛡️</div>
+            <img src="https://minecraft.wiki/images/Player_Head_(Inventory)_JE2.png" alt="Cape Builder" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Cape Pack Builder</span>
               <span class="tool-desc">Design custom player capes and textures.</span>
@@ -594,14 +593,14 @@
         <h2 class="category-title">TOOLS</h2>
         <div class="tools-grid-2col">
           <a href="/server-properties" class="tool-card">
-            <div class="tool-icon-wrap">⚙️</div>
+            <img src="https://minecraft.wiki/images/Totem_of_Undying_JE2_BE2.gif" alt="Properties Editor" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Properties Editor</span>
               <span class="tool-desc">Easily configure your server.properties files.</span>
             </div>
           </a>
           <a href="/java-arguments" class="tool-card teal-border">
-            <div class="tool-icon-wrap">💻</div>
+            <img src="https://minecraft.wiki/images/Shield_JE2_BE2.png" alt="Java Arguments" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Java Arguments</span>
               <span class="tool-desc">Optimize startup flags based on your server RAM.</span>
@@ -609,14 +608,14 @@
           </a>
           <a href="/mc-checker" class="tool-card teal-border">
             <div class="badge-new">NEW</div>
-            <div class="tool-icon-wrap">📡</div>
+            <img src="https://minecraft.wiki/images/Anvil_JE3_BE2.png" alt="Status Checker" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Status Checker</span>
               <span class="tool-desc">Inspect live player counts, versions, and MOTD.</span>
             </div>
           </a>
           <a href="/color-codes" class="tool-card">
-            <div class="tool-icon-wrap">✍️</div>
+            <img src="https://minecraft.wiki/images/Book_and_Quill_JE2_BE2.png" alt="Color Code Maker" class="tool-icon-img">
             <div class="tool-info">
               <span class="tool-name">Color Code Maker</span>
               <span class="tool-desc">Generate Minecraft formatting codes easily.</span>
