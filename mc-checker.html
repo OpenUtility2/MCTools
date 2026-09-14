@@ -33,26 +33,69 @@
   <link rel="stylesheet" href="/assets/css/style.css">
 
   <style>
-    /* Minecraft Dark-Purple & Dark-Blue Theme Override */
+    /* Matrix Cyan/Emerald Theme Variables */
     :root {
-      --mc-purple-bg: #12081f;
-      --mc-purple-dark: #1b0e2d;
-      --mc-panel-bg: #1a102a;
-      --mc-blue-accent: #2b3a67;
-      --mc-blue-dark: #1a2035;
-      --mc-white: #ffffff;
-      --mc-border: #3d2856;
-      --mc-text: #ffffff;
-      --mc-subtext: #b8a8d0;
+      --bg-primary: #091114;
+      --bg-secondary: #0f1b20;
+      --bg-card: #15252c;
+      --accent: #00e599;
+      --accent-hover: #00b87a;
+      --text-main: #ffffff;
+      --text-muted: #8fa8a1;
+      --border-color: #00e599;
+      --border-subtle: #1b333a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--mc-purple-bg);
-      color: var(--mc-text);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
       font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#25143a 15%, transparent 16%), radial-gradient(#1d0e30 15%, transparent 16%);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: flex-col;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* --- Starfall Background Animation --- */
+    .starfall-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      top: -10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--accent));
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(105vh);
+        opacity: 0;
+      }
     }
 
     h1, h2, h3, h4, .logo, .section-title {
@@ -60,14 +103,19 @@
       letter-spacing: -0.5px;
     }
 
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
     .site-header {
-      background: var(--mc-purple-dark);
-      border-bottom: 4px solid var(--mc-blue-accent);
-      box-shadow: 0 4px 0 #000000;
+      background: var(--bg-secondary);
+      border-bottom: 2px solid var(--border-color);
+      box-shadow: 0 0 15px rgba(0, 229, 153, 0.15);
     }
 
     .logo {
-      color: var(--mc-subtext) !important;
+      color: var(--accent) !important;
       text-transform: uppercase;
       font-size: 1.1rem;
       display: inline-flex;
@@ -92,7 +140,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: var(--mc-subtext);
+      color: var(--text-muted);
       text-decoration: none;
       font-size: 0.85rem;
       font-weight: 500;
@@ -101,27 +149,27 @@
     }
 
     .back-link:hover {
-      color: var(--mc-white);
+      color: var(--accent);
       text-decoration: underline;
     }
 
     .section-title {
       font-size: clamp(1.2rem, 2.5vw, 1.6rem);
       margin-bottom: 0.75rem;
+      color: var(--text-main);
     }
 
     .section-subtitle {
-      color: var(--mc-subtext);
+      color: var(--text-muted);
       font-size: 0.95rem;
       line-height: 1.6;
     }
 
     .checker-card {
-      background-color: var(--mc-panel-bg);
-      border: 3px solid #000;
-      outline: 2px solid var(--mc-border);
-      box-shadow: 6px 6px 0px #000000;
-      border-radius: 0;
+      background-color: var(--bg-secondary);
+      border: 2px solid var(--border-subtle);
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.15);
+      border-radius: 8px;
       padding: 32px;
     }
 
@@ -134,9 +182,9 @@
     .input-group input {
       flex: 1;
       padding: 14px 18px;
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
-      border-radius: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
       color: #fff;
       font-size: 0.95rem;
       font-family: 'Inter', sans-serif;
@@ -145,18 +193,18 @@
     }
 
     .input-group input:focus {
-      border-color: var(--mc-blue-accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 229, 153, 0.3);
     }
 
     .btn {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.7rem;
       text-transform: uppercase;
-      border-radius: 0;
-      border: 3px solid #000;
-      box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.4), inset 3px 3px 0px rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      border: none;
       padding: 12px 16px;
-      transition: all 0.1s ease;
+      transition: all 0.2s ease;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -164,27 +212,32 @@
     }
 
     .btn-primary {
-      background-color: var(--mc-blue-accent);
-      color: #fff;
+      background-color: var(--accent);
+      color: #000000;
+      box-shadow: 0 4px 0 #009966;
     }
 
     .btn-primary:hover {
-      background-color: #3b4e8c;
-      color: #fff;
+      background-color: var(--accent-hover);
+      transform: translateY(-1px);
     }
 
-    .btn-secondary {
-      background-color: var(--mc-purple-dark);
-      color: var(--mc-subtext);
-      border: 2px solid var(--mc-border);
-      font-size: 0.6rem;
-      padding: 6px 10px;
+    .btn-primary:active {
+      transform: translateY(2px);
       box-shadow: none;
     }
 
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.6rem;
+      padding: 6px 10px;
+    }
+
     .btn-secondary:hover {
-      background-color: var(--mc-blue-accent);
-      color: #fff;
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .presets {
@@ -197,17 +250,17 @@
 
     .preset-label {
       font-size: 0.7rem;
-      color: var(--mc-subtext);
+      color: var(--text-muted);
       font-weight: 600;
       text-transform: uppercase;
       font-family: 'Press Start 2P', monospace;
     }
 
     .preset-btn {
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
-      border-radius: 0;
-      color: var(--mc-white);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      color: var(--text-main);
       padding: 6px 12px;
       font-size: 0.8rem;
       cursor: pointer;
@@ -215,16 +268,16 @@
     }
 
     .preset-btn:hover {
-      background: var(--mc-blue-accent);
-      border-color: var(--mc-blue-accent);
-      color: #fff;
+      background: var(--border-subtle);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .result-box {
       display: none;
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
-      border-radius: 0;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
       padding: 24px;
       margin-top: 28px;
       animation: fadeIn 0.3s ease-out forwards;
@@ -242,7 +295,7 @@
       gap: 16px;
       margin-bottom: 20px;
       padding-bottom: 20px;
-      border-bottom: 2px solid var(--mc-border);
+      border-bottom: 1px solid var(--border-subtle);
       flex-wrap: wrap;
     }
 
@@ -255,9 +308,9 @@
     .server-icon {
       width: 64px;
       height: 64px;
-      border-radius: 0;
+      border-radius: 4px;
       background: #000;
-      border: 2px solid var(--mc-border);
+      border: 1px solid var(--border-subtle);
       object-fit: contain;
       image-rendering: pixelated;
     }
@@ -265,7 +318,7 @@
     .badge {
       display: inline-block;
       padding: 4px 10px;
-      border-radius: 0;
+      border-radius: 4px;
       font-size: 0.65rem;
       font-family: 'Press Start 2P', monospace;
       text-transform: uppercase;
@@ -273,15 +326,15 @@
     }
 
     .online {
-      background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
-      border: 2px solid #10b981;
+      background: rgba(0, 229, 153, 0.15);
+      color: var(--accent);
+      border: 1px solid var(--accent);
     }
 
     .offline {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
-      border: 2px solid #ef4444;
+      border: 1px solid #ef4444;
     }
 
     .info-grid {
@@ -292,15 +345,15 @@
     }
 
     .info-box {
-      background: var(--mc-panel-bg);
+      background: var(--bg-card);
       padding: 12px 16px;
-      border-radius: 0;
-      border: 2px solid var(--mc-border);
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
     }
 
     .info-label {
       font-size: 0.65rem;
-      color: var(--mc-subtext);
+      color: var(--text-muted);
       text-transform: uppercase;
       margin-bottom: 6px;
       font-family: 'Press Start 2P', monospace;
@@ -316,16 +369,16 @@
     .progress-bar-container {
       width: 100%;
       height: 8px;
-      background: #000;
-      border: 1px solid var(--mc-border);
-      border-radius: 0;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
       margin-top: 8px;
       overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
-      background: #10b981;
+      background: var(--accent);
       width: 0%;
       transition: width 0.4s ease;
     }
@@ -336,7 +389,7 @@
 
     .motd-label {
       font-size: 0.65rem;
-      color: var(--mc-subtext);
+      color: var(--text-muted);
       text-transform: uppercase;
       margin-bottom: 8px;
       font-family: 'Press Start 2P', monospace;
@@ -344,8 +397,8 @@
 
     .motd-box {
       background: #000000;
-      border: 2px solid var(--mc-border);
-      border-radius: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
       padding: 16px;
       font-family: 'VT323', monospace;
       font-size: 1.35rem;
@@ -360,7 +413,7 @@
     .loader {
       display: none;
       text-align: center;
-      color: var(--mc-subtext);
+      color: var(--accent);
       padding: 24px 0;
       font-weight: 500;
       font-family: 'Press Start 2P', monospace;
@@ -370,9 +423,9 @@
 
     /* MCTools Footer Styling */
     .site-footer {
-      background-color: #160e2a;
-      border-top: 1px solid #2d1d47;
-      color: #bfaedc;
+      background-color: var(--bg-secondary);
+      border-top: 2px solid var(--border-color);
+      color: var(--text-muted);
       padding: 3rem 1rem 2rem 1rem;
       text-align: center;
       font-family: 'Press Start 2P', monospace;
@@ -389,8 +442,8 @@
     }
 
     .footer-title {
-      font-size: 2rem;
-      color: #b39ddb;
+      font-size: 1.5rem;
+      color: var(--accent);
       margin: 0;
       letter-spacing: 1px;
       display: flex;
@@ -408,21 +461,24 @@
 
     .footer-socials a {
       color: #ffffff;
-      background: #1a2035;
+      background: var(--bg-card);
       width: 44px;
       height: 44px;
       border-radius: 50%;
+      border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
       text-decoration: none;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s, background 0.2s, border-color 0.2s;
       cursor: pointer;
     }
 
     .footer-socials a:hover {
-      background: var(--mc-blue-accent);
+      background: var(--bg-primary);
+      border-color: var(--accent);
+      color: var(--accent);
       transform: translateY(-2px);
     }
 
@@ -432,8 +488,8 @@
       justify-content: center;
       align-items: center;
       gap: 0.8rem;
-      font-size: 1rem;
-      color: #e0e0e0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .footer-nav-inline a {
@@ -443,16 +499,17 @@
     }
 
     .footer-nav-inline a:hover {
+      color: var(--accent);
       text-decoration: underline;
     }
 
     .footer-nav-inline .dot {
-      color: #7e689b;
+      color: var(--border-subtle);
     }
 
     .openutility-ad-box {
-      border: 1px solid #7e689b;
-      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
       padding: 6px 14px;
       display: inline-flex;
       align-items: center;
@@ -460,7 +517,7 @@
       font-size: 0.65rem;
       position: relative;
       margin-top: 0.5rem;
-      background: rgba(0, 0, 0, 0.2);
+      background: var(--bg-card);
     }
 
     .openutility-ad-box .ad-label {
@@ -468,9 +525,9 @@
       top: -9px;
       left: 50%;
       transform: translateX(-50%);
-      background: #160e2a;
+      background: var(--bg-secondary);
       padding: 0 6px;
-      color: #bfaedc;
+      color: var(--accent);
       font-size: 0.55rem;
       white-space: nowrap;
     }
@@ -487,8 +544,8 @@
     }
 
     .openutility-icon {
-      background: #2b3a67;
-      color: #fff;
+      background: var(--accent);
+      color: #000;
       border-radius: 50%;
       width: 20px;
       height: 20px;
@@ -501,7 +558,7 @@
     .footer-disclaimer {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem;
-      color: #8c7aa8;
+      color: var(--text-muted);
       line-height: 1.8;
       max-width: 650px;
       margin-top: 1rem;
@@ -522,6 +579,10 @@
   </style>
 </head>
 <body>
+
+  <!-- Animated Starfall Overlay -->
+  <div class="starfall-container" id="starfall"></div>
+
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="logo">
@@ -659,10 +720,37 @@
     </div>
   </footer>
 
+  <!-- Starfall Generator Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('starfall');
+      const starCount = 35;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+
+        const width = Math.random() * 2 + 1;
+        const height = Math.random() * 15 + 10;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+
+        star.style.width = `${width}px`;
+        star.style.height = `${height}px`;
+        star.style.left = `${posX}%`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.animationDelay = `${delay}s`;
+
+        container.appendChild(star);
+      }
+    });
+  </script>
+
   <!-- Root-Absolute JavaScript Path -->
   <script src="/assets/js/main.js"></script>
   <script>
-    const DEFAULT_ICON = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16"><rect width="16" height="16" fill="%232b1d0c"/><rect x="0" y="0" width="16" height="4" fill="%235c8e32"/><rect x="0" y="4" width="16" height="2" fill="%233e6820"/></svg>';
+    const DEFAULT_ICON = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16"><rect width="16" height="16" fill="%2315252c"/><rect x="0" y="0" width="16" height="4" fill="%2300e599"/><rect x="0" y="4" width="16" height="2" fill="%2300b87a"/></svg>';
 
     function quickCheck(ip) {
       document.getElementById('serverIp').value = ip;
@@ -686,122 +774,22 @@
     };
 
     function parseLegacyMotd(text) {
-      if (!text) return 'A Minecraft Server';
-      
-      let html = '';
-      let currentColor = '#ffffff';
-      let isBold = false;
-      let isItalic = false;
-      let isUnderline = false;
-
-      // Handle raw section formatting & legacy code signs
-      const parts = text.replace(/§/g, '&').split('&');
-      
-      parts.forEach((part, index) => {
-        if (index === 0) {
-          html += part;
-          return;
-        }
-
-        const code = part.charAt(0).toLowerCase();
-        const content = part.slice(1);
-
+      if (!text) return '';
+      let formatted = '';
+      let parts = text.split('§');
+      formatted += parts[0];
+      for (let i = 1; i < parts.length; i++) {
+        let code = parts[i].charAt(0);
+        let content = parts[i].slice(1);
         if (MC_COLOR_CODES[code]) {
-          currentColor = MC_COLOR_CODES[code];
-          isBold = false;
-          isItalic = false;
-          isUnderline = false;
-        } else if (code === 'l') {
-          isBold = true;
-        } else if (code === 'o') {
-          isItalic = true;
-        } else if (code === 'n') {
-          isUnderline = true;
-        } else if (code === 'r') {
-          currentColor = '#ffffff';
-          isBold = false;
-          isItalic = false;
-          isUnderline = false;
-        }
-
-        if (content) {
-          let styles = `color:${currentColor};`;
-          if (isBold) styles += 'font-weight:bold;';
-          if (isItalic) styles += 'font-style:italic;';
-          if (isUnderline) styles += 'text-decoration:underline;';
-          
-          html += `<span style="${styles}">${content}</span>`;
-        }
-      });
-
-      return html;
-    }
-
-    async function checkStatus() {
-      const ipInput = document.getElementById('serverIp').value.trim();
-      const loader = document.getElementById('loader');
-      const resultCard = document.getElementById('resultCard');
-
-      if (!ipInput) {
-        alert('Please enter a server IP address.');
-        return;
-      }
-
-      loader.style.display = 'block';
-      resultCard.style.display = 'none';
-
-      try {
-        const response = await fetch(`https://api.mcsrvstat.us/2/${encodeURIComponent(ipInput)}`);
-        const data = await response.json();
-
-        loader.style.display = 'none';
-        resultCard.style.display = 'block';
-
-        document.getElementById('serverHost').textContent = data.hostname || data.ip || ipInput;
-        document.getElementById('serverIpDisplay').textContent = `${data.ip || 'Unknown'}:${data.port || 25565}`;
-
-        const statusBadge = document.getElementById('statusBadge');
-        const iconImg = document.getElementById('serverIcon');
-
-        if (data.online) {
-          statusBadge.textContent = 'ONLINE';
-          statusBadge.className = 'badge online';
-          
-          // Set server icon or fallback
-          iconImg.src = data.icon ? data.icon : DEFAULT_ICON;
-
-          // Players
-          const onlinePlayers = data.players ? data.players.online : 0;
-          const maxPlayers = data.players ? data.players.max : 0;
-          document.getElementById('playerCount').textContent = `${onlinePlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
-          
-          const percentage = maxPlayers > 0 ? (onlinePlayers / maxPlayers) * 100 : 0;
-          document.getElementById('playerBar').style.width = `${Math.min(percentage, 100)}%`;
-
-          // Version
-          document.getElementById('serverVersion').textContent = data.version || 'Unknown';
-
-          // MOTD Parsing
-          if (data.motd && data.motd.clean) {
-            document.getElementById('serverMotd').innerHTML = parseLegacyMotd(data.motd.raw ? data.motd.raw.join('\n') : data.motd.clean.join('\n'));
-          } else {
-            document.getElementById('serverMotd').textContent = 'A Minecraft Server';
-          }
+          formatted += `<span style="color: ${MC_COLOR_CODES[code]}">${content}</span>`;
         } else {
-          statusBadge.textContent = 'OFFLINE';
-          statusBadge.className = 'badge offline';
-          iconImg.src = DEFAULT_ICON;
-          document.getElementById('playerCount').textContent = '0 / 0';
-          document.getElementById('playerBar').style.width = '0%';
-          document.getElementById('serverVersion').textContent = 'N/A';
-          document.getElementById('serverMotd').textContent = 'Server is currently offline or unreachable.';
+          formatted += content;
         }
-      } catch (err) {
-        loader.style.display = 'none';
-        alert('Failed to ping server. Please verify the IP and try again.');
-        console.error(err);
       }
+      return formatted;
     }
   </script>
+
 </body>
 </html>
