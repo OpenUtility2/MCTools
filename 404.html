@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Page Not Found — MCTools</title>
-  
+
+  <!-- Clean URL Redirect Script -->
   <script>
     (function() {
       var path = window.location.pathname;
 
-      // Check if URL ends with .html
+      // Check if URL ends with .html and avoid infinite redirect loops
       if (path.endsWith('.html')) {
         var cleanPath = path.slice(0, -5);
 
@@ -19,7 +20,9 @@
         }
 
         // Add trailing slash for clean folder routing
-        cleanPath += '/';
+        if (!cleanPath.endsWith('/')) {
+          cleanPath += '/';
+        }
 
         // Perform fast client-side redirect
         var targetUrl = window.location.origin + cleanPath + window.location.search + window.location.hash;
@@ -33,15 +36,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  
+
   <style>
     :root {
       --mc-purple-bg: #12081f;
       --mc-purple-dark: #1b0e2d;
       --mc-panel-bg: #1a102a;
       --mc-blue-accent: #2b3a67;
+      --mc-blue-hover: #3b4e8c;
       --mc-border: #3d2856;
       --mc-subtext: #b8a8d0;
+      --mc-accent-text: #b39ddb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
@@ -55,9 +66,7 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 0;
       padding: 20px;
-      box-sizing: border-box;
     }
 
     .error-card {
@@ -67,47 +76,87 @@
       box-shadow: 6px 6px 0px #000000;
       padding: 40px 30px;
       text-align: center;
-      max-width: 500px;
+      max-width: 480px;
       width: 100%;
     }
 
-    h1 {
+    .error-code {
       font-family: 'Press Start 2P', monospace;
-      font-size: 2.5rem;
-      color: #b39ddb;
-      margin: 0 0 15px 0;
+      font-size: 3rem;
+      color: var(--mc-accent-text);
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 0px #000;
+    }
+
+    .error-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.9rem;
+      color: #ffffff;
+      margin-bottom: 15px;
+      line-height: 1.4;
     }
 
     p {
       color: var(--mc-subtext);
       line-height: 1.6;
+      font-size: 0.95rem;
       margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .btn {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       border: 3px solid #000;
       box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.4), inset 3px 3px 0px rgba(255, 255, 255, 0.3);
-      padding: 12px 20px;
+      padding: 12px 18px;
       background-color: var(--mc-blue-accent);
       color: #ffffff;
       text-decoration: none;
-      display: inline-block;
-      transition: background-color 0.1s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background-color 0.1s ease, transform 0.1s ease;
     }
 
     .btn:hover {
-      background-color: #3b4e8c;
+      background-color: var(--mc-blue-hover);
+    }
+
+    .btn:active {
+      box-shadow: inset 3px 3px 0px rgba(0, 0, 0, 0.4), inset -3px -3px 0px rgba(255, 255, 255, 0.3);
+      transform: translateY(2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--mc-purple-dark);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--mc-border);
     }
   </style>
 </head>
 <body>
-  <div class="error-card">
-    <h1>404</h1>
-    <p>The chunk you are looking for hasn't been generated yet or was moved.</p>
-    <a href="/" class="btn"><i class="fas fa-home"></i> Back to Home</a>
-  </div>
+
+  <main class="error-card">
+    <div class="error-code">404</div>
+    <div class="error-title">CHUNK NOT GENERATED</div>
+    <p>The chunk or page you are looking for hasn't been generated yet or was moved to another dimension.</p>
+    
+    <div class="btn-group">
+      <a href="/" class="btn"><i class="fas fa-home"></i> Home</a>
+      <button onclick="history.back()" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
+    </div>
+  </main>
+
 </body>
 </html>
