@@ -1,0 +1,22 @@
+name: Send Changelog to Discord
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  discord-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send webhook to Discord
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: |
+            🚀 **New Release: ${{ github.event.release.name || github.event.release.tag_name }}**
+            
+            Check it out here: ${{ github.event.release.html_url }}
+            
+            ```markdown
+            ${{ github.event.release.body }}
+            ```
