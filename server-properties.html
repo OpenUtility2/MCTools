@@ -12,26 +12,47 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/server-properties.css">
   <style>
-    /* Minecraft Dark-Purple & Dark-Blue Theme Override */
+    /* Dark Cyan / Slate Theme Override */
     :root {
-      --mc-purple-bg: #12081f;
-      --mc-purple-dark: #1b0e2d;
-      --mc-panel-bg: #1a102a;
-      --mc-blue-accent: #2b3a67;
-      --mc-blue-dark: #1a2035;
-      --mc-white: #ffffff;
-      --mc-border: #3d2856;
-      --mc-text: #ffffff;
-      --mc-subtext: #b8a8d0;
+      --mc-bg: #0c1017;
+      --mc-panel-bg: #121824;
+      --mc-panel-header: #182030;
+      --mc-accent: #00ffaa;
+      --mc-accent-hover: #00cc88;
+      --mc-border: #1e293b;
+      --mc-text: #f8fafc;
+      --mc-subtext: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--mc-purple-bg);
+      background-color: var(--mc-bg);
       color: var(--mc-text);
       font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#25143a 15%, transparent 16%), radial-gradient(#1d0e30 15%, transparent 16%);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Starfall Canvas Background */
+    #star-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
     }
 
     h1, h2, h3, h4, .logo, .tool-panel-title {
@@ -40,13 +61,14 @@
     }
 
     .site-header {
-      background: var(--mc-purple-dark);
-      border-bottom: 4px solid var(--mc-blue-accent);
-      box-shadow: 0 4px 0 #000000;
+      background: rgba(12, 16, 23, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--mc-accent);
+      box-shadow: 0 4px 20px rgba(0, 255, 170, 0.15);
     }
 
     .logo {
-      color: var(--mc-subtext) !important;
+      color: var(--mc-accent) !important;
       text-transform: uppercase;
       font-size: 1.1rem;
       display: inline-flex;
@@ -62,24 +84,27 @@
     }
 
     .breadcrumb {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
       color: var(--mc-subtext);
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     .breadcrumb a {
-      color: var(--mc-subtext);
+      color: var(--mc-text);
       text-decoration: none;
     }
 
     .breadcrumb a:hover {
-      color: var(--mc-white);
+      color: var(--mc-accent);
     }
 
     .tool-page-header h1 {
       font-size: clamp(1.2rem, 2.5vw, 1.6rem);
       margin-bottom: 0.75rem;
+      color: var(--mc-text);
     }
 
     .tool-page-header p {
@@ -95,33 +120,35 @@
     }
 
     .tool-tab {
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
+      background: var(--mc-panel-bg);
+      border: 1px solid var(--mc-border);
       color: var(--mc-subtext);
       font-family: 'Press Start 2P', monospace;
       font-size: 0.7rem;
       padding: 10px 16px;
       cursor: pointer;
+      border-radius: 4px;
       transition: all 0.2s ease;
     }
 
     .tool-tab.active, .tool-tab:hover {
-      background: var(--mc-blue-accent);
-      border-color: var(--mc-blue-accent);
-      color: #fff;
+      background: var(--mc-accent);
+      border-color: var(--mc-accent);
+      color: #0c1017;
+      font-weight: bold;
     }
 
     .tool-panel {
       background-color: var(--mc-panel-bg);
-      border: 3px solid #000;
-      outline: 2px solid var(--mc-border);
-      box-shadow: 6px 6px 0px #000000;
+      border: 1px solid var(--mc-border);
+      border-radius: 8px;
       padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .tool-panel-title {
       font-size: 0.85rem;
-      color: #fff;
+      color: var(--mc-accent);
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
@@ -130,23 +157,27 @@
 
     .form-textarea {
       width: 100%;
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
-      color: #fff;
+      background: var(--mc-bg);
+      border: 1px solid var(--mc-border);
+      border-radius: 6px;
+      color: var(--mc-text);
       font-family: 'VT323', monospace;
       font-size: 1.2rem;
       padding: 12px;
       outline: none;
       box-sizing: border-box;
+      transition: border-color 0.2s ease;
     }
 
     .form-textarea:focus {
-      border-color: var(--mc-blue-accent);
+      border-color: var(--mc-accent);
+      box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
     }
 
     .upload-zone {
-      background: var(--mc-purple-dark);
-      border: 3px dashed var(--mc-border);
+      background: var(--mc-bg);
+      border: 2px dashed var(--mc-border);
+      border-radius: 8px;
       padding: 40px;
       text-align: center;
       cursor: pointer;
@@ -154,12 +185,12 @@
     }
 
     .upload-zone:hover {
-      border-color: var(--mc-blue-accent);
+      border-color: var(--mc-accent);
     }
 
     .upload-zone i {
       font-size: 2.5rem;
-      color: var(--mc-subtext);
+      color: var(--mc-accent);
       margin-bottom: 12px;
     }
 
@@ -177,18 +208,21 @@
 
     .form-input, .form-select {
       width: 100%;
-      background: var(--mc-purple-dark);
-      border: 2px solid var(--mc-border);
-      color: #fff;
+      background: var(--mc-bg);
+      border: 1px solid var(--mc-border);
+      border-radius: 4px;
+      color: var(--mc-text);
       padding: 10px;
       font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
       outline: none;
       box-sizing: border-box;
+      transition: border-color 0.2s ease;
     }
 
     .form-input:focus, .form-select:focus {
-      border-color: var(--mc-blue-accent);
+      border-color: var(--mc-accent);
+      box-shadow: 0 0 8px rgba(0, 255, 170, 0.2);
     }
 
     .info-row {
@@ -219,43 +253,44 @@
       font-family: 'Press Start 2P', monospace;
       font-size: 0.65rem;
       text-transform: uppercase;
-      border-radius: 0;
-      border: 3px solid #000;
-      box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.4), inset 3px 3px 0px rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      border: 2px solid var(--mc-accent);
       padding: 10px 14px;
-      transition: all 0.1s ease;
+      transition: all 0.2s ease;
       cursor: pointer;
       margin-right: 8px;
       margin-bottom: 12px;
     }
 
     .btn-secondary {
-      background-color: var(--mc-blue-accent);
-      color: #fff;
+      background-color: transparent;
+      color: var(--mc-accent);
     }
 
     .btn-secondary:hover {
-      background-color: #3b4e8c;
+      background-color: rgba(0, 255, 170, 0.1);
+      box-shadow: 0 0 10px rgba(0, 255, 170, 0.3);
     }
 
     .code-output {
-      background: #000000;
-      border: 2px solid var(--mc-border);
+      background: var(--mc-bg);
+      border: 1px solid var(--mc-border);
+      border-radius: 6px;
       padding: 16px;
       font-family: 'VT323', monospace;
       font-size: 1.25rem;
-      color: #ffffff;
+      color: var(--mc-text);
       white-space: pre-wrap;
       word-break: break-word;
       max-height: 300px;
       overflow-y: auto;
     }
 
-    /* MCTools Footer Styling */
+    /* Footer Styling */
     .site-footer {
-      background-color: #160e2a;
-      border-top: 1px solid #2d1d47;
-      color: #bfaedc;
+      background-color: #080b10;
+      border-top: 1px solid var(--mc-border);
+      color: var(--mc-subtext);
       padding: 3rem 1rem 2rem 1rem;
       text-align: center;
       font-family: 'Press Start 2P', monospace;
@@ -272,8 +307,8 @@
     }
 
     .footer-title {
-      font-size: 2rem;
-      color: #b39ddb;
+      font-size: 1.5rem;
+      color: var(--mc-accent);
       margin: 0;
       letter-spacing: 1px;
       display: flex;
@@ -291,7 +326,8 @@
 
     .footer-socials a {
       color: #ffffff;
-      background: #1a2035;
+      background: var(--mc-panel-bg);
+      border: 1px solid var(--mc-border);
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -300,13 +336,14 @@
       justify-content: center;
       font-size: 1.2rem;
       text-decoration: none;
-      transition: transform 0.2s, background 0.2s;
+      transition: all 0.2s ease;
       cursor: pointer;
     }
 
     .footer-socials a:hover {
-      background: var(--mc-blue-accent);
-      transform: translateY(-2px);
+      background: var(--mc-accent);
+      color: #0c1017;
+      border-color: var(--mc-accent);
     }
 
     .footer-nav-inline {
@@ -315,26 +352,26 @@
       justify-content: center;
       align-items: center;
       gap: 0.8rem;
-      font-size: 1rem;
-      color: #e0e0e0;
+      font-size: 0.8rem;
+      color: var(--mc-subtext);
     }
 
     .footer-nav-inline a {
-      color: #ffffff;
+      color: var(--mc-text);
       text-decoration: none;
       cursor: pointer;
     }
 
     .footer-nav-inline a:hover {
-      text-decoration: underline;
+      color: var(--mc-accent);
     }
 
     .footer-nav-inline .dot {
-      color: #7e689b;
+      color: var(--mc-subtext);
     }
 
     .openutility-ad-box {
-      border: 1px solid #7e689b;
+      border: 1px solid var(--mc-border);
       border-radius: 8px;
       padding: 6px 14px;
       display: inline-flex;
@@ -343,7 +380,7 @@
       font-size: 0.65rem;
       position: relative;
       margin-top: 0.5rem;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .openutility-ad-box .ad-label {
@@ -351,9 +388,9 @@
       top: -9px;
       left: 50%;
       transform: translateX(-50%);
-      background: #160e2a;
+      background: #080b10;
       padding: 0 6px;
-      color: #bfaedc;
+      color: var(--mc-subtext);
       font-size: 0.55rem;
       white-space: nowrap;
     }
@@ -370,8 +407,8 @@
     }
 
     .openutility-icon {
-      background: #2b3a67;
-      color: #fff;
+      background: var(--mc-accent);
+      color: #0c1017;
       border-radius: 50%;
       width: 20px;
       height: 20px;
@@ -383,8 +420,8 @@
 
     .footer-disclaimer {
       font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem;
-      color: #8c7aa8;
+      font-size: 0.55rem;
+      color: var(--mc-subtext);
       line-height: 1.8;
       max-width: 650px;
       margin-top: 1rem;
@@ -392,6 +429,9 @@
   </style>
 </head>
 <body>
+  <!-- Canvas background for Starfall effect -->
+  <canvas id="star-canvas"></canvas>
+
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="logo">
@@ -513,6 +553,59 @@
     </div>
   </footer>
 
+  <!-- Canvas Starfall Script -->
+  <script>
+    const canvas = document.getElementById('star-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const stars = [];
+    const count = 45;
+
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        length: Math.random() * 25 + 10,
+        speed: Math.random() * 4 + 2,
+        opacity: Math.random() * 0.7 + 0.3,
+        color: Math.random() > 0.4 ? '#00ffaa' : '#ffffff'
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.moveTo(star.x, star.y);
+        ctx.lineTo(star.x - star.length * 0.3, star.y + star.length);
+        ctx.strokeStyle = star.color;
+        ctx.globalAlpha = star.opacity;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        star.y += star.speed;
+        star.x -= star.speed * 0.3;
+
+        if (star.y > canvas.height || star.x < 0) {
+          star.y = -20;
+          star.x = Math.random() * (canvas.width + 100);
+        }
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+
   <script src="assets/js/main.js"></script>
   <script>
     (function () {
@@ -611,24 +704,18 @@
               const option = document.createElement("option");
               option.value = opt;
               option.textContent = opt;
-              if (value === opt) option.selected = true;
+              if (opt === value) option.selected = true;
               input.appendChild(option);
             });
-          } else if (def.type === "number") {
+          } else {
             input = document.createElement("input");
-            input.type = "number";
+            input.type = def.type;
             input.className = "form-input";
             input.value = value;
             if (def.min !== undefined) input.min = def.min;
             if (def.max !== undefined) input.max = def.max;
-          } else {
-            input = document.createElement("input");
-            input.type = "text";
-            input.className = "form-input";
-            input.value = value;
           }
 
-          input.dataset.key = def.key;
           input.addEventListener("input", () => {
             propertiesData[def.key] = input.value;
             updateOutput();
@@ -638,111 +725,106 @@
           knownContainer.appendChild(wrapper);
         });
 
-        if (unknownKeysFound.length > 0) {
+        if (unknownKeysFound.length === 0) {
+          unknownContainer.innerHTML = '<p class="empty-state">No unknown settings found.</p>';
+        } else {
           unknownKeysFound.forEach(key => {
             const row = document.createElement("div");
             row.className = "info-row";
             row.innerHTML = `<span class="info-label">${key}</span><span class="info-value unknown">${propertiesData[key]}</span>`;
             unknownContainer.appendChild(row);
           });
-        } else {
-          unknownContainer.innerHTML = '<div class="empty-state"><i class="fas fa-check-circle" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i><p>No unknown properties.</p></div>';
         }
 
+        document.getElementById("properties-parsed").style.display = "block";
         updateOutput();
       }
 
       function updateOutput() {
-        const output = document.getElementById("properties-output");
-        output.textContent = serializeProperties(propertiesData);
+        const output = serializeProperties(propertiesData);
+        document.getElementById("properties-output").textContent = output;
       }
 
-      function loadFromText(text) {
-        propertiesData = parseProperties(text);
-        document.getElementById("properties-parsed").style.display = "block";
-        renderEditor();
-        if (window.showToast) {
-          showToast("Properties loaded", "success");
-        }
-      }
-
-      const rawTextarea = document.getElementById("properties-raw");
-      rawTextarea.addEventListener("input", () => {
-        if (rawTextarea.value.trim()) {
-          loadFromText(rawTextarea.value);
-        }
-      });
-
-      document.getElementById("properties-file").addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          rawTextarea.value = ev.target.result;
-          loadFromText(ev.target.result);
-        };
-        reader.readAsText(file);
-      });
-
-      const uploadZone = document.getElementById("upload-zone");
-      uploadZone.addEventListener("click", () => document.getElementById("properties-file").click());
-
-      uploadZone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        uploadZone.style.borderColor = "var(--mc-blue-accent)";
-      });
-
-      uploadZone.addEventListener("dragleave", () => {
-        uploadZone.style.borderColor = "";
-      });
-
-      uploadZone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        uploadZone.style.borderColor = "";
-        const file = e.dataTransfer.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          rawTextarea.value = ev.target.result;
-          loadFromText(ev.target.result);
-        };
-        reader.readAsText(file);
-      });
-
+      // Tab switching
       document.querySelectorAll(".tool-tab").forEach(tab => {
         tab.addEventListener("click", () => {
           document.querySelectorAll(".tool-tab").forEach(t => t.classList.remove("active"));
           tab.classList.add("active");
-          document.querySelectorAll(".tab-content").forEach(c => c.style.display = "none");
-          document.getElementById("tab-" + tab.dataset.tab).style.display = "block";
+
+          const target = tab.dataset.tab;
+          document.getElementById("tab-paste").style.display = target === "paste" ? "block" : "none";
+          document.getElementById("tab-upload").style.display = target === "upload" ? "block" : "none";
         });
       });
 
-      document.getElementById("properties-copy").addEventListener("click", () => {
-        const text = serializeProperties(propertiesData);
-        if (!text) {
-          if (window.showToast) showToast("No properties to copy", "error");
-          return;
+      // Raw Input Handler
+      const rawArea = document.getElementById("properties-raw");
+      rawArea.addEventListener("input", () => {
+        propertiesData = parseProperties(rawArea.value);
+        if (Object.keys(propertiesData).length > 0) {
+          renderEditor();
+        } else {
+          document.getElementById("properties-parsed").style.display = "none";
         }
-        if (window.copyToClipboard) copyToClipboard(text, "Properties copied to clipboard");
+      });
+
+      // File Upload Handler
+      const uploadZone = document.getElementById("upload-zone");
+      const fileInput = document.getElementById("properties-file");
+
+      uploadZone.addEventListener("click", () => fileInput.click());
+
+      uploadZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadZone.style.borderColor = "var(--mc-accent)";
+      });
+
+      uploadZone.addEventListener("dragleave", () => {
+        uploadZone.style.borderColor = "var(--mc-border)";
+      });
+
+      uploadZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadZone.style.borderColor = "var(--mc-border)";
+        if (e.dataTransfer.files.length > 0) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) {
+          handleFile(fileInput.files[0]);
+        }
+      });
+
+      function handleFile(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target.result;
+          rawArea.value = content;
+          propertiesData = parseProperties(content);
+          renderEditor();
+        };
+        reader.readAsText(file);
+      }
+
+      // Copy & Download Buttons
+      document.getElementById("properties-copy").addEventListener("click", () => {
+        const text = document.getElementById("properties-output").textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Copied to clipboard!");
+        });
       });
 
       document.getElementById("properties-download").addEventListener("click", () => {
-        const text = serializeProperties(propertiesData);
-        if (!text) {
-          if (window.showToast) showToast("No properties to download", "error");
-          return;
-        }
+        const text = document.getElementById("properties-output").textContent;
         const blob = new Blob([text], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
         a.download = "server.properties";
-        document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        if (window.showToast) showToast("File downloaded", "success");
       });
     })();
   </script>
