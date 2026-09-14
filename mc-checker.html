@@ -697,92 +697,68 @@
 
     async function checkStatus() {
       const ipInput = document.getElementById('serverIp').value.trim();
+      if (!ipInput) return;
+
       const loader = document.getElementById('loader');
       const resultCard = document.getElementById('resultCard');
-
-      if (!ipInput) return;
 
       loader.style.display = 'block';
       resultCard.style.display = 'none';
 
-      const statusBadge = document.getElementById('statusBadge');
-      const serverHost = document.getElementById('serverHost');
-      const playerCount = document.getElementById('playerCount');
-      const playerBar = document.getElementById('playerBar');
-      const serverVersion = document.getElementById('serverVersion');
-      const serverIpDisplay = document.getElementById('serverIpDisplay');
-      const serverMotd = document.getElementById('serverMotd');
-      const serverIcon = document.getElementById('serverIcon');
-
-      let data = null;
-
-      // Primary API Request (api.mcsrvstat.us)
       try {
-        const response = await fetch(`https://api.mcsrvstat.us/3/${ipInput}`);
-        if (response.ok) {
-          data = await response.json();
+        const response = await fetch(`https://api.mcsrvstat.us/2/${encodeURIComponent(ipInput)}`);
+        const data = await response.json();
+
+        loader.style.display = 'none';
+        resultCard.style.display = 'block';
+
+        const hostEl = document.getElementById('serverHost');
+        const badgeEl = document.getElementById('statusBadge');
+        const iconEl = document.getElementById('serverIcon');
+        const playerCountEl = document.getElementById('playerCount');
+        const playerBarEl = document.getElementById('playerBar');
+        const versionEl = document.getElementById('serverVersion');
+        const ipDisplayEl = document.getElementById('serverIpDisplay');
+        const motdEl = document.getElementById('serverMotd');
+
+        hostEl.textContent = data.hostname || data.ip || ipInput;
+        ipDisplayEl.textContent = `${data.ip || ipInput}${data.port ? ':' + data.port : ''}`;
+
+        if (data.online) {
+          badgeEl.textContent = 'Online';
+          badgeEl.className = 'badge online';
+
+          iconEl.src = data.icon || DEFAULT_ICON;
+
+          const onlinePlayers = data.players ? data.players.online : 0;
+          const maxPlayers = data.players ? data.players.max : 0;
+          playerCountEl.textContent = `${onlinePlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
+
+          const percentage = maxPlayers > 0 ? Math.min((onlinePlayers / maxPlayers) * 100, 100) : 0;
+          playerBarEl.style.width = `${percentage}%`;
+
+          versionEl.textContent = data.version || 'Unknown';
+          motdEl.innerHTML = renderMotdHtml(data.motd);
+        } else {
+          badgeEl.textContent = 'Offline';
+          badgeEl.className = 'badge offline';
+          iconEl.src = DEFAULT_ICON;
+          playerCountEl.textContent = '0 / 0';
+          playerBarEl.style.width = '0%';
+          versionEl.textContent = 'N/A';
+          motdEl.innerHTML = '<span style="color: #ef4444;">Server is offline or unreachable.</span>';
         }
-      } catch (e) {
-        console.warn('Primary API failed, trying fallback API...');
-      }
+      } catch (err) {
+        loader.style.display = 'none';
+        resultCard.style.display = 'block';
 
-      // Secondary Fallback API Request (api.mcstatus.io)
-      if (!data || !data.online) {
-        try {
-          const fallbackRes = await fetch(`https://api.mcstatus.io/v2/status/java/${ipInput}`);
-          if (fallbackRes.ok) {
-            const fbData = await fallbackRes.json();
-            if (fbData.online) {
-              data = {
-                online: true,
-                hostname: fbData.host,
-                ip: fbData.ip_address,
-                port: fbData.port,
-                players: {
-                  online: fbData.players.online,
-                  max: fbData.players.max
-                },
-                version: fbData.version.name_clean,
-                motd: { html: [fbData.motd.html] },
-                icon: fbData.icon
-              };
-            }
-          }
-        } catch (e) {
-          console.warn('Fallback API failed.');
-        }
-      }
-
-      loader.style.display = 'none';
-      resultCard.style.display = 'block';
-
-      if (data && data.online) {
-        serverHost.textContent = data.hostname || data.ip || ipInput;
-        serverIpDisplay.textContent = `${data.ip || ipInput}:${data.port || 25565}`;
-
-        statusBadge.textContent = 'Online';
-        statusBadge.className = 'badge online';
-
-        const onlinePlayers = data.players ? (data.players.online || 0) : 0;
-        const maxPlayers = data.players ? (data.players.max || 0) : 0;
-        playerCount.textContent = `${onlinePlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
-
-        const percent = maxPlayers > 0 ? (onlinePlayers / maxPlayers) * 100 : 0;
-        playerBar.style.width = `${Math.min(percent, 100)}%`;
-
-        serverVersion.textContent = data.version || 'Java Edition';
-        serverMotd.innerHTML = renderMotdHtml(data.motd);
-        serverIcon.src = data.icon || DEFAULT_ICON;
-      } else {
-        serverHost.textContent = ipInput;
-        serverIpDisplay.textContent = `${ipInput}:25565`;
-        statusBadge.textContent = 'Offline / Unreachable';
-        statusBadge.className = 'badge offline';
-        playerCount.textContent = '0 / 0';
-        playerBar.style.width = '0%';
-        serverVersion.textContent = 'N/A';
-        serverMotd.innerHTML = '<span style="color: #ef4444;">Could not connect to server. Check if the IP is correct and the server is running.</span>';
-        serverIcon.src = DEFAULT_ICON;
+        document.getElementById('statusBadge').textContent = 'Error';
+        document.getElementById('statusBadge').className = 'badge offline';
+        document.getElementById('serverIcon').src = DEFAULT_ICON;
+        document.getElementById('playerCount').textContent = 'N/A';
+        document.getElementById('playerBar').style.width = '0%';
+        document.getElementById('serverVersion').textContent = 'N/A';
+        document.getElementById('serverMotd').innerHTML = '<span style="color: #ef4444;">Failed to fetch server status. Please try again.</span>';
       }
     }
   </script>
