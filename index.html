@@ -69,25 +69,26 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   
   <style>
-    /* Minecraft Dark-Purple & Dark-Blue Theme */
+    /* Minecraft Ender Teal & Dark Obsidian Theme */
     :root {
-      --mc-purple-bg: #12081f;
-      --mc-purple-dark: #1b0e2d;
-      --mc-panel-bg: #1a102a;
-      /* Replaced green colors with dark-blue accents */
-      --mc-blue-accent: #2b3a67;
-      --mc-blue-dark: #1a2035;
+      --mc-bg: #0d1117;
+      --mc-header-bg: #161b22;
+      --mc-panel-bg: #182026;
+      --mc-accent: #00e6a8;
+      --mc-accent-hover: #00b383;
+      --mc-accent-dark: #0f3830;
       --mc-white: #ffffff;
-      --mc-border: #3d2856;
-      --mc-text: #ffffff;
-      --mc-subtext: #b8a8d0;
+      --mc-border: #233534;
+      --mc-text: #f0f6fc;
+      --mc-subtext: #8b949e;
+      --mc-teal-glow: #39ffc4;
     }
 
     body {
-      background-color: var(--mc-purple-bg);
+      background-color: var(--mc-bg);
       color: var(--mc-text);
       font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#25143a 15%, transparent 16%), radial-gradient(#1d0e30 15%, transparent 16%);
+      background-image: radial-gradient(#1c2b29 15%, transparent 16%), radial-gradient(#14201e 15%, transparent 16%);
       background-size: 30px 30px;
       background-position: 0 0, 15px 15px;
     }
@@ -98,13 +99,13 @@
     }
 
     .site-header {
-      background: var(--mc-purple-dark);
-      border-bottom: 4px solid var(--mc-blue-accent);
+      background: var(--mc-header-bg);
+      border-bottom: 4px solid var(--mc-accent);
       box-shadow: 0 4px 0 #000000;
     }
 
     .logo {
-      color: var(--mc-subtext) !important;
+      color: var(--mc-accent) !important;
       text-transform: uppercase;
       font-size: 1.1rem;
       display: inline-flex;
@@ -132,13 +133,14 @@
     }
 
     .btn-primary {
-      background-color: var(--mc-blue-accent);
-      color: #fff;
+      background-color: var(--mc-accent);
+      color: #0d1117;
+      font-weight: bold;
     }
 
     .btn-primary:hover {
-      background-color: #3b4e8c;
-      color: #fff;
+      background-color: var(--mc-accent-hover);
+      color: #0d1117;
     }
 
     .card, .feature-card, .about-section {
@@ -154,7 +156,7 @@
     }
 
     .card-icon, .feature-icon, .logo-icon {
-      color: var(--mc-subtext);
+      color: var(--mc-accent);
     }
 
     /* CUSTOM ANIMATED TOOLS ICONS Styles */
@@ -166,7 +168,7 @@
       width: 64px;
       height: 64px;
       border-radius: 8px;
-      background: rgba(43, 58, 103, 0.15); /* matching dark-blue accent */
+      background: rgba(0, 230, 168, 0.1);
       border: 2px solid var(--mc-border);
       margin-bottom: 1rem;
       overflow: hidden;
@@ -174,14 +176,14 @@
     }
 
     .card:hover .card-icon {
-      background: rgba(184, 168, 208, 0.15); /* glowing light purple */
-      border-color: var(--mc-subtext);
+      background: rgba(0, 230, 168, 0.2);
+      border-color: var(--mc-accent);
     }
 
     /* Base Icon physics */
     .card-icon i {
       font-size: 2rem;
-      color: var(--mc-subtext);
+      color: var(--mc-accent);
       display: inline-block;
       transform-origin: center bottom;
     }
@@ -240,7 +242,7 @@
 
     @keyframes subtlePulse {
       0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(0,0,0,0)); }
-      50% { transform: scale(1.1); filter: drop-shadow(0 0 6px var(--mc-subtext)); }
+      50% { transform: scale(1.1); filter: drop-shadow(0 0 6px var(--mc-accent)); }
     }
     @keyframes angryPulse {
       0% { transform: scale(1); filter: drop-shadow(0 0 2px #5abaff); }
@@ -249,7 +251,7 @@
 
     @keyframes signalRadar {
       0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 3px var(--mc-subtext)); }
+      50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 3px var(--mc-accent)); }
     }
     @keyframes signalRadarFast {
       0% { transform: translateY(0) scale(1); }
@@ -259,9 +261,9 @@
 
     /* Custom MCTools Footer Layout */
     .site-footer {
-      background-color: #160e2a;
-      border-top: 1px solid #2d1d47;
-      color: #bfaedc;
+      background-color: #0a0d12;
+      border-top: 1px solid var(--mc-border);
+      color: var(--mc-subtext);
       padding: 3rem 1rem 2rem 1rem;
       text-align: center;
       font-family: 'Press Start 2P', monospace;
@@ -278,7 +280,7 @@
 
     .footer-title {
       font-size: 2rem;
-      color: #b39ddb;
+      color: var(--mc-accent);
       margin: 0;
       letter-spacing: 1px;
       display: flex;
@@ -296,7 +298,7 @@
 
     .footer-socials a {
       color: #ffffff;
-      background: #1a2035; /* Dark blue background for icons */
+      background: var(--mc-accent-dark);
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -310,7 +312,8 @@
     }
 
     .footer-socials a:hover {
-      background: var(--mc-blue-accent);
+      background: var(--mc-accent);
+      color: #0d1117;
       transform: translateY(-2px);
     }
 
@@ -332,14 +335,15 @@
 
     .footer-nav-inline a:hover {
       text-decoration: underline;
+      color: var(--mc-accent);
     }
 
     .footer-nav-inline .dot {
-      color: #7e689b;
+      color: var(--mc-border);
     }
 
     .openutility-ad-box {
-      border: 1px solid #7e689b;
+      border: 1px solid var(--mc-border);
       border-radius: 8px;
       padding: 6px 14px;
       display: inline-flex;
@@ -348,7 +352,7 @@
       font-size: 0.65rem;
       position: relative;
       margin-top: 0.5rem;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.4);
     }
 
     .openutility-ad-box .ad-label {
@@ -356,9 +360,9 @@
       top: -9px;
       left: 50%;
       transform: translateX(-50%);
-      background: #160e2a;
+      background: #0a0d12;
       padding: 0 6px;
-      color: #bfaedc;
+      color: var(--mc-subtext);
       font-size: 0.55rem;
       white-space: nowrap;
     }
@@ -385,7 +389,7 @@
     .footer-disclaimer {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem;
-      color: #8c7aa8;
+      color: var(--mc-subtext);
       line-height: 1.8;
       max-width: 650px;
       margin-top: 1rem;
@@ -556,21 +560,8 @@
       <div class="footer-nav-inline">
         <a href="/#about">About</a>
         <span class="dot">&bull;</span>
-        <div class="openutility-ad-box">
-          <span class="ad-label">powered by</span>
-          <a href="https://discord.gg/ufvQ4Ghtpu" class="openutility-badge" target="_blank" rel="noopener">
-            <img src="/assets/images/openutility-logo.png" alt="OpenUtility Logo" class="openutility-icon"> OpenUtility&reg;
-          </a>
-        </div>
       </div>
-
-      <p class="footer-disclaimer">
-        Not an official Minecraft service. Not approved by or associated with Mojang or Microsoft.
-      </p>
     </div>
   </footer>
-
-  <!-- Root-Absolute JS Path -->
-  <script src="/assets/js/main.js"></script>
 </body>
 </html>
