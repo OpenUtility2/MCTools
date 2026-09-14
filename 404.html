@@ -3,160 +3,315 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Not Found — MCTools</title>
+  <title>404 - Page Not Found | MC Tools</title>
 
   <!-- Clean URL Redirect Script -->
   <script>
     (function() {
       var path = window.location.pathname;
 
-      // Check if URL ends with .html and avoid infinite redirect loops
       if (path.endsWith('.html')) {
         var cleanPath = path.slice(0, -5);
 
-        // Remove trailing 'index' if present (e.g. /index.html -> /)
         if (cleanPath.endsWith('/index')) {
           cleanPath = cleanPath.slice(0, -6);
         }
 
-        // Add trailing slash for clean folder routing
         if (!cleanPath.endsWith('/')) {
           cleanPath += '/';
         }
 
-        // Perform fast client-side redirect
         var targetUrl = window.location.origin + cleanPath + window.location.search + window.location.hash;
         window.location.replace(targetUrl);
       }
     })();
   </script>
 
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --mc-purple-bg: #12081f;
-      --mc-purple-dark: #1b0e2d;
-      --mc-panel-bg: #1a102a;
-      --mc-blue-accent: #2b3a67;
-      --mc-blue-hover: #3b4e8c;
-      --mc-border: #3d2856;
-      --mc-subtext: #b8a8d0;
-      --mc-accent-text: #b39ddb;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #475569;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      background-color: var(--mc-purple-bg);
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#25143a 15%, transparent 16%), radial-gradient(#1d0e30 15%, transparent 16%);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* --- Starfall Background Animation --- */
+    .starfall-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      top: -10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--accent));
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(105vh);
+        opacity: 0;
+      }
+    }
+
+    /* --- Page Layout --- */
+    .site-header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .site-logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .main-content {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+      padding: 2rem 1rem;
+      position: relative;
+      z-index: 1;
     }
 
     .error-card {
-      background-color: var(--mc-panel-bg);
-      border: 3px solid #000;
-      outline: 2px solid var(--mc-border);
-      box-shadow: 6px 6px 0px #000000;
-      padding: 40px 30px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 3rem 2rem;
       text-align: center;
-      max-width: 480px;
+      max-width: 520px;
       width: 100%;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
     .error-code {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 3rem;
-      color: var(--mc-accent-text);
-      margin-bottom: 20px;
-      text-shadow: 3px 3px 0px #000;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -2px;
     }
 
     .error-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.9rem;
-      color: #ffffff;
-      margin-bottom: 15px;
-      line-height: 1.4;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
     }
 
-    p {
-      color: var(--mc-subtext);
-      line-height: 1.6;
+    .error-desc {
+      color: var(--text-muted);
       font-size: 0.95rem;
-      margin-bottom: 30px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
     }
 
     .btn-group {
       display: flex;
-      gap: 12px;
+      gap: 0.75rem;
       justify-content: center;
       flex-wrap: wrap;
     }
 
     .btn {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      border: 3px solid #000;
-      box-shadow: inset -3px -3px 0px rgba(0, 0, 0, 0.4), inset 3px 3px 0px rgba(255, 255, 255, 0.3);
-      padding: 12px 18px;
-      background-color: var(--mc-blue-accent);
-      color: #ffffff;
-      text-decoration: none;
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: background-color 0.1s ease, transform 0.1s ease;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .btn:hover {
-      background-color: var(--mc-blue-hover);
+    .btn-primary {
+      background: var(--accent);
+      color: #0f172a;
     }
 
-    .btn:active {
-      box-shadow: inset 3px 3px 0px rgba(0, 0, 0, 0.4), inset -3px -3px 0px rgba(255, 255, 255, 0.3);
-      transform: translateY(2px);
+    .btn-primary:hover {
+      background: var(--accent-hover);
     }
 
     .btn-secondary {
-      background-color: var(--mc-purple-dark);
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
     }
 
     .btn-secondary:hover {
-      background-color: var(--mc-border);
+      background: var(--border-color);
+    }
+
+    /* --- Footer --- */
+    .site-footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 1rem;
+      margin-top: auto;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .openutility-ad-box {
+      margin-top: 0.5rem;
+    }
+
+    .openutility-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      color: var(--text-main);
+      text-decoration: none;
+      border: 1px solid var(--border-color);
+    }
+
+    .ad-label {
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-right: 0.2rem;
     }
   </style>
 </head>
 <body>
 
-  <main class="error-card">
-    <div class="error-code">404</div>
-    <div class="error-title">CHUNK NOT GENERATED</div>
-    <p>The chunk or page you are looking for hasn't been generated yet or was moved to another dimension.</p>
-    
-    <div class="btn-group">
-      <a href="/" class="btn"><i class="fas fa-home"></i> Home</a>
-      <button onclick="history.back()" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
+  <!-- Animated Starfall Overlay -->
+  <div class="starfall-container" id="starfall"></div>
+
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="site-logo">
+        <i class="fas fa-cube"></i> MC TOOLS
+      </a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="error-card">
+      <div class="error-code">404</div>
+      <h1 class="error-title">Chunk Not Generated</h1>
+      <p class="error-desc">The page or resource you are looking for hasn't been generated yet or was moved to another dimension.</p>
+      
+      <div class="btn-group">
+        <a href="/" class="btn btn-primary"><i class="fas fa-home"></i> Back to Home</a>
+        <button onclick="history.back()" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Go Back</button>
+      </div>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>MC TOOLS</div>
+      <div class="openutility-ad-box">
+        <span class="ad-label">SPONSORED</span>
+        <a href="https://openutility.org" target="_blank" rel="noopener" class="openutility-badge">
+          <i class="fas fa-wrench"></i> OpenUtility
+        </a>
+      </div>
+      <div>MCTools is not affiliated with Mojang Studios or Microsoft.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Dynamic Starfall Animation Generator
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('starfall');
+      const starCount = 35;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+
+        const width = Math.random() * 2 + 1;
+        const height = Math.random() * 15 + 10;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+
+        star.style.width = `${width}px`;
+        star.style.height = `${height}px`;
+        star.style.left = `${posX}%`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.animationDelay = `${delay}s`;
+
+        container.appendChild(star);
+      }
+    });
+  </script>
 
 </body>
 </html>
