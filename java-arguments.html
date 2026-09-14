@@ -31,12 +31,52 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* --- Starfall Background Animation --- */
+    .starfall-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      top: -10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--accent));
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(105vh);
+        opacity: 0;
+      }
+    }
+
+    /* --- Site Header --- */
     .site-header {
       background-color: var(--bg-secondary);
       border-bottom: 1px solid var(--border-color);
       padding: 1rem 2rem;
+      position: relative;
+      z-index: 1;
     }
 
     .header-container {
@@ -57,9 +97,12 @@
       text-decoration: none;
     }
 
+    /* --- Main Layout --- */
     .main-content {
       flex: 1;
       padding: 2rem 1rem;
+      position: relative;
+      z-index: 1;
     }
 
     .container {
@@ -238,6 +281,7 @@
       cursor: pointer;
     }
 
+    /* --- Site Footer --- */
     .site-footer {
       background: var(--bg-secondary);
       border-top: 1px solid var(--border-color);
@@ -246,6 +290,8 @@
       text-align: center;
       font-size: 0.85rem;
       color: var(--text-muted);
+      position: relative;
+      z-index: 1;
     }
 
     .footer-container {
@@ -282,9 +328,12 @@
 </head>
 <body>
 
+  <!-- Animated Starfall Overlay -->
+  <div class="starfall-container" id="starfall"></div>
+
   <header class="site-header">
     <div class="header-container">
-      <a href="#" class="site-logo">
+      <a href="/" class="site-logo">
         <i class="fas fa-cube"></i> MC TOOLS
       </a>
     </div>
@@ -449,6 +498,29 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Dynamic Starfall Animation Generator
+      const container = document.getElementById('starfall');
+      const starCount = 35;
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+
+        const width = Math.random() * 2 + 1;
+        const height = Math.random() * 15 + 10;
+        const posX = Math.random() * 100;
+        const duration = Math.random() * 3 + 2;
+        const delay = Math.random() * 5;
+
+        star.style.width = `${width}px`;
+        star.style.height = `${height}px`;
+        star.style.left = `${posX}%`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.animationDelay = `${delay}s`;
+
+        container.appendChild(star);
+      }
+
       const versionSelect = document.getElementById('mc-version');
       const versionSpinner = document.getElementById('version-spinner');
       const versionStatus = document.getElementById('version-status');
@@ -461,7 +533,6 @@
       const advancedPanel = document.getElementById('advanced-panel');
       const toggleIcon = document.getElementById('toggle-icon');
 
-      // Add listeners for dynamic regeneration across all controls
       const formControls = [
         'server-software', 'java-version', 'performance', 
         'gc-type', 'opt-nogui', 'opt-vectors', 'opt-largepages', 'opt-preview'
@@ -631,24 +702,20 @@
             '-XX:G1NewSizePercent=30',
             '-XX:G1MaxNewSizePercent=40',
             '-XX:G1HeapRegionSize=8M',
-            '-XX:G1ReservePercent=15',
+            '-XX:G1ReservePercent=20',
             '-XX:G1HeapWastePercent=5',
             '-XX:G1MixedGCCountTarget=4',
             '-XX:InitiatingHeapOccupancyPercent=15',
             '-XX:G1MixedGCLiveThresholdPercent=90',
             '-XX:G1RSetUpdatingPauseTimePercent=5',
-            '-XX:SurvivorRatio=32',
+            '-XX:SurviorRatio=32',
             '-XX:+PerfDisableSharedMem',
             '-XX:MaxTenuringThreshold=1'
           );
         } else if (gc === 'zgc') {
-          flags.push('-XX:+UseZGC');
-          if (javaVer < 21) {
-            flags.push('-XX:+UnlockExperimentalVMOptions');
-          }
-          flags.push('-XX:+AlwaysPreTouch');
+          flags.push('-XX:+UseZGC', '-XX:+UnlockExperimentalVMOptions');
         } else if (gc === 'shenandoah') {
-          flags.push('-XX:+UseShenandoahGC', '-XX:+UnlockExperimentalVMOptions', '-XX:+AlwaysPreTouch');
+          flags.push('-XX:+UseShenandoahGC', '-XX:+UnlockExperimentalVMOptions');
         } else if (gc === 'parallel') {
           flags.push('-XX:+UseParallelGC');
         }
@@ -665,25 +732,18 @@
           flags.push('--enable-preview');
         }
 
-        // Jar target determination
-        let jarName = 'server.jar';
-        if (software === 'paper') jarName = 'paper.jar';
-        else if (software === 'spigot') jarName = 'spigot.jar';
-        else if (software === 'fabric') jarName = 'fabric-server-launch.jar';
-        else if (software === 'velocity') jarName = 'velocity.jar';
+        flags.push('-jar', `${software}.jar`);
 
-        flags.push('-jar', jarName);
-
-        if (noGui && software !== 'velocity') {
+        if (noGui) {
           flags.push('--nogui');
         }
 
         argsOutput.textContent = flags.join(' ');
       }
 
-      // Initial Fetch on load
       fetchVersions();
     });
   </script>
+
 </body>
 </html>
