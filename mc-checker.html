@@ -677,27 +677,92 @@
       });
     }
 
+    // Minecraft Section-Code Color Map
+    const MC_COLOR_CODES = {
+      '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
+      '4': '#AA0000', '5': '#AA00AA', '6': '#FFAA00', '7': '#AAAAAA',
+      '8': '#555555', '9': '#5555FF', 'a': '#55FF55', 'b': '#55FFFF',
+      'c': '#FF5555', 'd': '#FF55FF', 'e': '#FFFF55', 'f': '#FFFFFF'
+    };
+
+    function parseLegacyMotd(text) {
+      if (!text) return '<span style="color: #a0a0a0;">No MOTD available</span>';
+      
+      let html = '';
+      let currentColor = '#FFFFFF';
+      let isBold = false;
+      let isItalic = false;
+      let isUnderline = false;
+      let isStrikethrough = false;
+
+      const parts = text.split(/(§[0-9a-fk-or])/gi);
+
+      parts.forEach(part => {
+        if (part.startsWith('§') && part.length === 2) {
+          const code = part.charAt(1).toLowerCase();
+          if (MC_COLOR_CODES[code]) {
+            currentColor = MC_COLOR_CODES[code];
+            isBold = false;
+            isItalic = false;
+            isUnderline = false;
+            isStrikethrough = false;
+          } else if (code === 'l') {
+            isBold = true;
+          } else if (code === 'm') {
+            isStrikethrough = true;
+          } else if (code === 'n') {
+            isUnderline = true;
+          } else if (code === 'o') {
+            isItalic = true;
+          } else if (code === 'r') {
+            currentColor = '#FFFFFF';
+            isBold = false;
+            isItalic = false;
+            isUnderline = false;
+            isStrikethrough = false;
+          }
+        } else if (part.length > 0) {
+          let styles = `color: ${currentColor};`;
+          if (isBold) styles += 'font-weight: bold;';
+          if (isItalic) styles += 'font-style: italic;';
+          let decoration = '';
+          if (isUnderline) decoration += 'underline ';
+          if (isStrikethrough) decoration += 'line-through';
+          if (decoration) styles += `text-decoration: ${decoration.trim()};`;
+
+          const escapedText = part.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+          html += `<span style="${styles}">${escapedText}</span>`;
+        }
+      });
+
+      return html;
+    }
+
     function renderMotdHtml(motdData) {
       if (!motdData) return '<span style="color: #a0a0a0;">No MOTD available</span>';
       
-      if (motdData.html && motdData.html.length > 0) {
-        return motdData.html.join('<br>');
-      }
-      
-      if (motdData.clean && motdData.clean.length > 0) {
-        return motdData.clean.join('<br>');
+      if (typeof motdData === 'object') {
+        if (motdData.html && Array.isArray(motdData.html) && motdData.html.length > 0) {
+          return motdData.html.join('<br>');
+        }
+        if (motdData.clean && Array.isArray(motdData.clean) && motdData.clean.length > 0) {
+          return motdData.clean.join('<br>');
+        }
+        if (motdData.raw) {
+          return parseLegacyMotd(Array.isArray(motdData.raw) ? motdData.raw.join('\n') : motdData.raw);
+        }
       }
 
       if (typeof motdData === 'string') {
-        return motdData;
+        return parseLegacyMotd(motdData);
       }
 
       return '<span style="color: #a0a0a0;">No MOTD available</span>';
     }
 
     async function checkStatus() {
-      const ipInput = document.getElementById('serverIp').value.trim();
-      if (!ipInput) return;
+      const input = document.getElementById('serverIp').value.trim();
+      if (!input) return;
 
       const loader = document.getElementById('loader');
       const resultCard = document.getElementById('resultCard');
@@ -706,59 +771,55 @@
       resultCard.style.display = 'none';
 
       try {
-        const response = await fetch(`https://api.mcsrvstat.us/2/${encodeURIComponent(ipInput)}`);
+        const response = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(input)}`);
         const data = await response.json();
 
         loader.style.display = 'none';
         resultCard.style.display = 'block';
 
-        const hostEl = document.getElementById('serverHost');
-        const badgeEl = document.getElementById('statusBadge');
-        const iconEl = document.getElementById('serverIcon');
-        const playerCountEl = document.getElementById('playerCount');
-        const playerBarEl = document.getElementById('playerBar');
-        const versionEl = document.getElementById('serverVersion');
-        const ipDisplayEl = document.getElementById('serverIpDisplay');
-        const motdEl = document.getElementById('serverMotd');
+        const serverHost = document.getElementById('serverHost');
+        const statusBadge = document.getElementById('statusBadge');
+        const serverIcon = document.getElementById('serverIcon');
+        const playerCount = document.getElementById('playerCount');
+        const playerBar = document.getElementById('playerBar');
+        const serverVersion = document.getElementById('serverVersion');
+        const serverIpDisplay = document.getElementById('serverIpDisplay');
+        const serverMotd = document.getElementById('serverMotd');
 
-        hostEl.textContent = data.hostname || data.ip || ipInput;
-        ipDisplayEl.textContent = `${data.ip || ipInput}${data.port ? ':' + data.port : ''}`;
+        serverHost.textContent = data.hostname || data.ip || input;
+        serverIpDisplay.textContent = `${data.ip || input}:${data.port || 25565}`;
 
         if (data.online) {
-          badgeEl.textContent = 'Online';
-          badgeEl.className = 'badge online';
+          statusBadge.textContent = 'ONLINE';
+          statusBadge.className = 'badge online';
 
-          iconEl.src = data.icon || DEFAULT_ICON;
-
-          const onlinePlayers = data.players ? data.players.online : 0;
+          const currentPlayers = data.players ? data.players.online : 0;
           const maxPlayers = data.players ? data.players.max : 0;
-          playerCountEl.textContent = `${onlinePlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
+          playerCount.textContent = `${currentPlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
 
-          const percentage = maxPlayers > 0 ? Math.min((onlinePlayers / maxPlayers) * 100, 100) : 0;
-          playerBarEl.style.width = `${percentage}%`;
+          const percent = maxPlayers > 0 ? Math.min((currentPlayers / maxPlayers) * 100, 100) : 0;
+          playerBar.style.width = `${percent}%`;
 
-          versionEl.textContent = data.version || 'Unknown';
-          motdEl.innerHTML = renderMotdHtml(data.motd);
+          serverVersion.textContent = data.version || 'Unknown';
+          serverIcon.src = data.icon || DEFAULT_ICON;
+          serverMotd.innerHTML = renderMotdHtml(data.motd);
         } else {
-          badgeEl.textContent = 'Offline';
-          badgeEl.className = 'badge offline';
-          iconEl.src = DEFAULT_ICON;
-          playerCountEl.textContent = '0 / 0';
-          playerBarEl.style.width = '0%';
-          versionEl.textContent = 'N/A';
-          motdEl.innerHTML = '<span style="color: #ef4444;">Server is offline or unreachable.</span>';
+          statusBadge.textContent = 'OFFLINE';
+          statusBadge.className = 'badge offline';
+          playerCount.textContent = '0 / 0';
+          playerBar.style.width = '0%';
+          serverVersion.textContent = 'N/A';
+          serverIcon.src = DEFAULT_ICON;
+          serverMotd.innerHTML = '<span style="color: #ef4444;">Could not reach server. Verify IP address or port.</span>';
         }
       } catch (err) {
+        console.error('Ping Error:', err);
         loader.style.display = 'none';
         resultCard.style.display = 'block';
 
-        document.getElementById('statusBadge').textContent = 'Error';
+        document.getElementById('statusBadge').textContent = 'ERROR';
         document.getElementById('statusBadge').className = 'badge offline';
-        document.getElementById('serverIcon').src = DEFAULT_ICON;
-        document.getElementById('playerCount').textContent = 'N/A';
-        document.getElementById('playerBar').style.width = '0%';
-        document.getElementById('serverVersion').textContent = 'N/A';
-        document.getElementById('serverMotd').innerHTML = '<span style="color: #ef4444;">Failed to fetch server status. Please try again.</span>';
+        document.getElementById('serverMotd').innerHTML = '<span style="color: #ef4444;">Failed to retrieve server details. Please try again.</span>';
       }
     }
   </script>
