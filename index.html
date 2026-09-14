@@ -470,6 +470,14 @@
       color: #92ffd4;
     }
 
+    .card-icon-converter .card-icon i {
+      animation: imageBounce 2.5s infinite ease-in-out;
+    }
+    .card-icon-converter:hover .card-icon i {
+      animation: imageBounceFast 0.6s infinite ease-in-out;
+      color: #ffde59;
+    }
+
     /* KEYFRAMES */
     @keyframes floatSlide {
       0%, 100% { transform: translateY(0) rotate(0); }
@@ -506,6 +514,15 @@
       0% { transform: translateY(0) scale(1); }
       50% { transform: translateY(-2px) scale(1.2); filter: drop-shadow(0 0 8px #54f3a7); }
       100% { transform: translateY(0) scale(1); }
+    }
+
+    @keyframes imageBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes imageBounceFast {
+      0%, 100% { transform: translateY(0) scale(1.1); }
+      50% { transform: translateY(-6px) scale(1.15); }
     }
 
     /* Footer Layout */
@@ -674,189 +691,4 @@
             <p class="card-description">Generate suitable Java startup arguments based on your Minecraft server and available RAM.</p>
             <a href="/java-arguments" class="btn btn-secondary btn-sm">Open Tool <i class="fas fa-arrow-right"></i></a>
           </div>
-          <div class="card card-status">
-            <div class="card-icon"><i class="fas fa-signal"></i></div>
-            <h3 class="card-title">Server Status Checker</h3>
-            <p class="card-description">Check real-time status, MOTD, version, and live player count of any Minecraft server.</p>
-            <a href="/mc-checker" class="btn btn-secondary btn-sm">Open Tool <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Why MC Tools?</h2>
-          <p class="section-subtitle">Built by OpenUtility for server owners.</p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-gift"></i></div>
-            <div>
-              <h3 class="feature-title">100% Free</h3>
-              <p class="feature-desc">All tools are completely free to use forever.</p>
-            </div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-user-lock"></i></div>
-            <div>
-              <h3 class="feature-title">No Account Required</h3>
-              <p class="feature-desc">Use the tools without creating an account.</p>
-            </div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-globe"></i></div>
-            <div>
-              <h3 class="feature-title">Browser Based</h3>
-              <p class="feature-desc">Tools run directly in the browser whenever possible.</p>
-            </div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-            <div>
-              <h3 class="feature-title">Privacy Focused</h3>
-              <p class="feature-desc">User files and configurations remain local whenever possible.</p>
-            </div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-            <div>
-              <h3 class="feature-title">Lightweight</h3>
-              <p class="feature-desc">Fast loading with minimal dependencies.</p>
-            </div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon"><i class="fas fa-cube"></i></div>
-            <div>
-              <h3 class="feature-title">Minecraft Focused</h3>
-              <p class="feature-desc">Built specifically for Minecraft server administration.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="section about-section">
-      <div class="container">
-        <div class="about-content">
-          <h2 class="section-title">About MC Tools</h2>
-          <p>MC Tools, created by OpenUtility, is an open-source suite of powerful tools designed to streamline Minecraft server management. Instead of hunting down individual utilities for daily administrative tasks, server owners can manage everything seamlessly from one centralized website.</p>
-          <p>Every tool runs locally in your browser. No data is sent to external servers.</p>
-          <a href="https://discord.gg/ufvQ4Ghtpu" target="_blank" rel="noopener" class="btn btn-primary"><i class="fab fa-discord"></i> View on Discord</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-container">
-      <h2 class="footer-title">
-        <img src="/assets/images/logo.png" alt="MC Tools Logo" class="site-logo"> MCTools
-      </h2>
-      
-      <div class="footer-socials">
-        <a href="https://discord.gg/ufvQ4Ghtpu" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
-        <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube (Coming Soon)"><i class="fab fa-youtube"></i></a>
-        <a href="https://reddit.com" target="_blank" rel="noopener" aria-label="Reddit (Coming Soon)"><i class="fab fa-reddit-alien"></i></a>
-        <a href="https://ko-fi.com" target="_blank" rel="noopener" aria-label="Ko-fi (Coming Soon)"><i class="fas fa-mug-hot"></i></a>
-        <a href="mailto:contact@openutility.org" aria-label="Email"><i class="fas fa-envelope"></i></a>
-      </div>
-
-      <div class="footer-nav-inline">
-        <span>&copy; 2026 MCTools</span>
-        <span class="dot">&bull;</span>
-        <a href="/privacy">Privacy Policy</a>
-        <span class="dot">&bull;</span>
-        <a href="/terms">Terms of Service</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Mobile menu toggle
-      const toggleBtn = document.querySelector('.mobile-nav-toggle');
-      const mobileMenu = document.getElementById('mobileNavMenu');
-
-      if (toggleBtn && mobileMenu) {
-        toggleBtn.addEventListener('click', () => {
-          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-          toggleBtn.setAttribute('aria-expanded', !isExpanded);
-          mobileMenu.classList.toggle('is-active');
-        });
-      }
-
-      // Starfall Canvas Background Engine
-      const canvas = document.getElementById('starfield');
-      const ctx = canvas.getContext('2d');
-
-      let width = (canvas.width = window.innerWidth);
-      let height = (canvas.height = window.innerHeight);
-
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      const starCount = 80;
-      const stars = [];
-
-      class Star {
-        constructor() {
-          this.reset(true);
-        }
-
-        reset(initial = false) {
-          this.x = Math.random() * width;
-          this.y = initial ? Math.random() * height : -10;
-          this.length = Math.random() * 20 + 10;
-          this.speed = Math.random() * 2 + 1;
-          this.size = Math.random() * 1.8 + 0.6;
-          this.alpha = Math.random() * 0.7 + 0.3;
-          // Theme-matching colors (ender teal, white, subtle cyan)
-          const colors = ['#00e6a8', '#ffffff', '#8ce1ff', '#54f3a7'];
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-        }
-
-        update() {
-          this.y += this.speed;
-          this.x += this.speed * 0.3; // Slight diagonal tilt
-
-          if (this.y > height || this.x > width) {
-            this.reset(false);
-          }
-        }
-
-        draw() {
-          ctx.beginPath();
-          ctx.strokeStyle = this.color;
-          ctx.globalAlpha = this.alpha;
-          ctx.lineWidth = this.size;
-          ctx.lineCap = 'round';
-
-          ctx.moveTo(this.x, this.y);
-          ctx.lineTo(this.x - this.length * 0.3, this.y - this.length);
-          ctx.stroke();
-          ctx.globalAlpha = 1;
-        }
-      }
-
-      for (let i = 0; i < starCount; i++) {
-        stars.push(new Star());
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        stars.forEach((star) => {
-          star.update();
-          star.draw();
-        });
-        requestAnimationFrame(animate);
-      }
-
-      animate();
-    });
-  </script>
-</body>
-</html>
+          <div cl
