@@ -72,7 +72,7 @@
     /* Minecraft Ender Teal & Dark Obsidian Theme */
     :root {
       --mc-bg: #0d1117;
-      --mc-header-bg: #161b22;
+      --mc-header-bg: #12181f;
       --mc-panel-bg: #182026;
       --mc-accent: #00e6a8;
       --mc-accent-hover: #00b383;
@@ -81,7 +81,7 @@
       --mc-border: #233534;
       --mc-text: #f0f6fc;
       --mc-subtext: #8b949e;
-      --mc-teal-glow: #39ffc4;
+      --mc-teal-glow: rgba(0, 230, 168, 0.4);
     }
 
     body {
@@ -98,10 +98,23 @@
       letter-spacing: -0.5px;
     }
 
+    /* ENHANCED POLISHED HEADER */
     .site-header {
       background: var(--mc-header-bg);
-      border-bottom: 4px solid var(--mc-accent);
-      box-shadow: 0 4px 0 #000000;
+      border-bottom: 3px solid var(--mc-accent);
+      box-shadow: 0 4px 15px rgba(0, 230, 168, 0.15), 0 4px 0 #000000;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.75rem 1.25rem;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .logo {
@@ -110,14 +123,50 @@
       font-size: 1.1rem;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
+      text-shadow: 0 0 10px var(--mc-teal-glow);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.02);
+      filter: drop-shadow(0 0 8px var(--mc-accent));
     }
 
     .site-logo {
-      height: 32px;
+      height: 34px;
       width: auto;
       vertical-align: middle;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Mobile Nav Toggle Icon */
+    .mobile-nav-toggle {
+      background: rgba(0, 230, 168, 0.08);
+      border: 2px solid var(--mc-accent);
+      color: var(--mc-accent);
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 0px #000;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .mobile-nav-toggle:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #000;
+    }
+
+    .mobile-nav-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background-color: var(--mc-accent);
+      box-shadow: 0 0 5px var(--mc-teal-glow);
     }
 
     .btn {
@@ -180,7 +229,6 @@
       border-color: var(--mc-accent);
     }
 
-    /* Base Icon physics */
     .card-icon i {
       font-size: 2rem;
       color: var(--mc-accent);
@@ -259,7 +307,7 @@
       100% { transform: translateY(0) scale(1); }
     }
 
-    /* Custom MCTools Footer Layout */
+    /* Footer Layout */
     .site-footer {
       background-color: #0a0d12;
       border-top: 1px solid var(--mc-border);
@@ -341,66 +389,13 @@
     .footer-nav-inline .dot {
       color: var(--mc-border);
     }
-
-    .openutility-ad-box {
-      border: 1px solid var(--mc-border);
-      border-radius: 8px;
-      padding: 6px 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.65rem;
-      position: relative;
-      margin-top: 0.5rem;
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .openutility-ad-box .ad-label {
-      position: absolute;
-      top: -9px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0a0d12;
-      padding: 0 6px;
-      color: var(--mc-subtext);
-      font-size: 0.55rem;
-      white-space: nowrap;
-    }
-
-    .openutility-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #ffffff;
-      font-family: sans-serif;
-      font-weight: bold;
-      font-size: 0.9rem;
-      text-decoration: none;
-    }
-
-    .openutility-icon {
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
-      vertical-align: middle;
-      border-radius: 50%;
-    }
-
-    .footer-disclaimer {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.6rem;
-      color: var(--mc-subtext);
-      line-height: 1.8;
-      max-width: 650px;
-      margin-top: 1rem;
-    }
   </style>
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="logo">
-        <img src="/assets/images/logo.png" alt="MC Tools Logo" class="site-logo"> MC Tools
+        <img src="/assets/images/logo.png" alt="MC Tools Logo" class="site-logo"> MC TOOLS
       </a>
       <nav>
         <ul class="nav-links">
