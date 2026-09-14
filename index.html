@@ -72,8 +72,8 @@
     /* Minecraft Ender Teal & Dark Obsidian Theme */
     :root {
       --mc-bg: #0d1117;
-      --mc-header-bg: #12181f;
-      --mc-panel-bg: #182026;
+      --mc-header-bg: rgba(18, 24, 31, 0.9);
+      --mc-panel-bg: rgba(24, 32, 38, 0.88);
       --mc-accent: #00e6a8;
       --mc-accent-hover: #00b383;
       --mc-accent-dark: #0f3830;
@@ -94,12 +94,22 @@
       background-color: var(--mc-bg);
       color: var(--mc-text);
       font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#1c2b29 15%, transparent 16%), radial-gradient(#14201e 15%, transparent 16%);
-      background-size: 30px 30px;
-      background-position: 0 0, 15px 15px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* FALLING STARS CANVAS BACKGROUND */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
 
     main {
@@ -120,6 +130,7 @@
     /* ENHANCED POLISHED HEADER */
     .site-header {
       background: var(--mc-header-bg);
+      backdrop-filter: blur(8px);
       border-bottom: 3px solid var(--mc-accent);
       box-shadow: 0 4px 15px rgba(0, 230, 168, 0.15), 0 4px 0 #000000;
       position: sticky;
@@ -218,6 +229,7 @@
       display: none;
       flex-direction: column;
       background-color: var(--mc-panel-bg);
+      backdrop-filter: blur(8px);
       border-bottom: 2px solid var(--mc-accent);
       padding: 1rem;
       gap: 0.75rem;
@@ -330,6 +342,7 @@
 
     .card, .feature-card, .about-section {
       background-color: var(--mc-panel-bg);
+      backdrop-filter: blur(4px);
       border: 3px solid #000;
       outline: 2px solid var(--mc-border);
       box-shadow: 6px 6px 0px #000000;
@@ -341,7 +354,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
     .card:hover {
@@ -595,6 +608,9 @@
   </style>
 </head>
 <body>
+  <!-- BACKGROUND ANIMATION CANVAS -->
+  <canvas id="starfield"></canvas>
+
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="logo">
@@ -759,6 +775,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Mobile menu toggle
       const toggleBtn = document.querySelector('.mobile-nav-toggle');
       const mobileMenu = document.getElementById('mobileNavMenu');
 
@@ -769,6 +786,76 @@
           mobileMenu.classList.toggle('is-active');
         });
       }
+
+      // Starfall Canvas Background Engine
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const starCount = 80;
+      const stars = [];
+
+      class Star {
+        constructor() {
+          this.reset(true);
+        }
+
+        reset(initial = false) {
+          this.x = Math.random() * width;
+          this.y = initial ? Math.random() * height : -10;
+          this.length = Math.random() * 20 + 10;
+          this.speed = Math.random() * 2 + 1;
+          this.size = Math.random() * 1.8 + 0.6;
+          this.alpha = Math.random() * 0.7 + 0.3;
+          // Theme-matching colors (ender teal, white, subtle cyan)
+          const colors = ['#00e6a8', '#ffffff', '#8ce1ff', '#54f3a7'];
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        update() {
+          this.y += this.speed;
+          this.x += this.speed * 0.3; // Slight diagonal tilt
+
+          if (this.y > height || this.x > width) {
+            this.reset(false);
+          }
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.strokeStyle = this.color;
+          ctx.globalAlpha = this.alpha;
+          ctx.lineWidth = this.size;
+          ctx.lineCap = 'round';
+
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x - this.length * 0.3, this.y - this.length);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach((star) => {
+          star.update();
+          star.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      animate();
     });
   </script>
 </body>
