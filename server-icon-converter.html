@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO Meta Tags -->
+  <title>Minecraft Server Icon Converter (64x64 PNG) — MCTools</title>
+  <meta name="title" content="Minecraft Server Icon Converter (64x64 PNG) — MCTools">
+  <meta name="description" content="Convert and crop any image into an official 64x64 server-icon.png file for your Minecraft server. 100% private and runs client-side in browser.">
+  <meta name="keywords" content="minecraft server icon converter, 64x64 png resizer, server-icon.png generator, minecraft tools, server branding">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="OpenUtility">
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #091114;
+      --bg-secondary: #0f1b20;
+      --bg-card: #15252c;
+      --accent: #00e599;
+      --accent-hover: #00b87a;
+      --text-main: #ffffff;
+      --text-muted: #8fa8a1;
+      --border-color: #00e599;
+      --border-subtle: #1b333a;
+      --danger: #ef4444;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2, h3, .logo, .section-title {
+      font-family: 'Press Start 2P', monospace;
+      letter-spacing: -0.5px;
+    }
+
+    .site-header {
+      background: var(--bg-secondary);
+      border-bottom: 2px solid var(--border-color);
+      box-shadow: 0 0 15px rgba(0, 229, 153, 0.15);
+      padding: 1rem;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: var(--accent) !important;
+      text-transform: uppercase;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .converter-wrapper {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    .section-title {
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .card {
+      background-color: var(--bg-secondary);
+      border: 2px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 0 20px rgba(0, 229, 153, 0.05);
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-card);
+      padding: 2.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      background: rgba(0, 229, 153, 0.05);
+      border-color: var(--accent-hover);
+    }
+
+    .drop-zone i {
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .drop-zone p {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .drop-zone span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .file-input {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Converter Controls Workspace */
+    .workspace {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .preview-box {
+      background: #000;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .canvas-preview-wrapper {
+      width: 128px;
+      height: 128px;
+      background-image: linear-gradient(45deg, #111 25%, transparent 25%), linear-gradient(-45deg, #111 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #111 75%), linear-gradient(-45deg, transparent 75%, #111 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      width: 128px !important;
+      height: 128px !important;
+      image-rendering: pixelated; /* Keeps downscaled pixels sharp */
+    }
+
+    /* Simulated Multiplayer Server List Row */
+    .mc-server-preview {
+      width: 100%;
+      background: #0f0f0f;
+      border: 2px solid #282828;
+      padding: 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .mc-server-preview img {
+      width: 64px;
+      height: 64px;
+      border-radius: 2px;
+    }
+
+    .mc-server-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mc-server-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      color: #ffffff;
+    }
+
+    .mc-server-motd {
+      font-family: 'VT323', monospace;
+      font-size: 0.95rem;
+      color: #aaaaaa;
+    }
+
+    .controls-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-group label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      border-radius: 4px;
+      border: none;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 0 #009966;
+    }
+
+    .btn-primary:hover { background-color: var(--accent-hover); }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .instructions {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .instructions ol {
+      margin-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .instructions li { margin-bottom: 0.4rem; }
+
+    .site-footer {
+      background-color: var(--bg-secondary);
+      border-top: 2px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 2rem 1rem;
+      text-align: center;
+      font-family: 'Press Start 2P', monospace;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo"><i class="fas fa-cube"></i> MC Tools</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="converter-wrapper">
+      <a href="/#tools" class="back-link"><i class="fas fa-arrow-left"></i> Back to Tools</a>
+
+      <div class="section-header">
+        <h1 class="section-title">Server Icon Converter</h1>
+        <p class="section-subtitle">Automatically resize, crop, and convert any image into the official 64x64 PNG format required by Minecraft.</p>
+      </div>
+
+      <div class="card">
+        <!-- Drag & Drop Upload Zone -->
+        <div class="drop-zone" id="dropZone">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Drag & Drop your image here, or click to browse</p>
+          <span>Supports PNG, JPG, WEBP, or GIF (Auto-cropped to 64x64 square)</span>
+          <input type="file" id="fileInput" class="file-input" accept="image/*" />
+        </div>
+
+        <!-- Interactive Crop/Resize Workspace -->
+        <div class="workspace" id="workspace">
+          <div class="preview-box">
+            <span style="font-family: 'Press Start 2P', monospace; font-size: 0.6rem; color: var(--text-muted);">64x64 Icon Canvas</span>
+            
+            <div class="canvas-preview-wrapper">
+              <canvas id="iconCanvas" width="64" height="64"></canvas>
+            </div>
+
+            <!-- In-Game Multiplayer List Live Mockup -->
+            <span style="font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--text-muted); margin-top: 10px;">In-Game Preview:</span>
+            <div class="mc-server-preview">
+              <img id="mockIcon" src="" alt="Server Icon Preview" />
+              <div class="mc-server-info">
+                <span class="mc-server-name">A Minecraft Server</span>
+                <span class="mc-server-motd">Can you survive the wilderness?</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="controls-box">
+            <div class="control-group">
+              <label for="fitMode">Scaling / Fitting Mode</label>
+              <select id="fitMode" class="btn btn-secondary" style="width: 100%; text-align: left;" onchange="processImage()">
+                <option value="cover">Crop & Fill (Center Cover)</option>
+                <option value="contain">Fit Full Image (Keep Transparency)</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary" onclick="downloadIcon()">
+              <i class="fas fa-download"></i> Download server-icon.png
+            </button>
+
+            <button class="btn btn-secondary" onclick="resetConverter()">
+              <i class="fas fa-redo"></i> Convert Another Image
+            </button>
+          </div>
+        </div>
+
+        <!-- Installation Instructions -->
+        <div class="instructions">
+          <h3 style="font-size: 0.75rem; color: var(--accent); margin-bottom: 0.5rem;">How to apply your new icon:</h3>
+          <ol>
+            <li>Download the converted <strong><code>server-icon.png</code></strong> file above.</li>
+            <li>Open your Minecraft server root directory (where <code>server.properties</code> is located).</li>
+            <li>Place <strong><code>server-icon.png</code></strong> directly inside the main folder.</li>
+            <li>Restart your Minecraft server and refresh your in-game multiplayer server list.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <h2 style="font-size: 1.1rem; color: var(--accent);"><i class="fas fa-cube"></i> MCTools</h2>
+      <p style="font-size: 0.55rem; color: var(--text-muted); margin-top: 8px;">100% Private Client-Side Tools.</p>
+    </div>
+  </footer>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const workspace = document.getElementById('workspace');
+    const canvas = document.getElementById('iconCanvas');
+    const ctx = canvas.getContext('2d');
+    const mockIcon = document.getElementById('mockIcon');
+    let currentImage = null;
+
+    // Handle Drag & Drop Events
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer.files;
+      if (files.length) handleFile(files[0]);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          currentImage = img;
+          dropZone.style.display = 'none';
+          workspace.style.display = 'grid';
+          processImage();
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function processImage() {
+      if (!currentImage) return;
+
+      // Clear Canvas
+      ctx.clearRect(0, 0, 64, 64);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      const fitMode = document.getElementById('fitMode').value;
+      const srcW = currentImage.width;
+      const srcH = currentImage.height;
+
+      if (fitMode === 'cover') {
+        // Center crop and fill whole 64x64 canvas
+        const scale = Math.max(64 / srcW, 64 / srcH);
+        const nw = srcW * scale;
+        const nh = srcH * scale;
+        const cx = (64 - nw) / 2;
+        const cy = (64 - nh) / 2;
+        ctx.drawImage(currentImage, cx, cy, nw, nh);
+      } else {
+        // Contain image inside 64x64 while keeping aspect ratio & transparency
+        const scale = Math.min(64 / srcW, 64 / srcH);
+        const nw = srcW * scale;
+        const nh = srcH * scale;
+        const cx = (64 - nw) / 2;
+        const cy = (64 - nh) / 2;
+        ctx.drawImage(currentImage, cx, cy, nw, nh);
+      }
+
+      // Update mock in-game list preview
+      mockIcon.src = canvas.toDataURL('image/png');
+    }
+
+    function downloadIcon() {
+      const link = document.createElement('a');
+      link.download = 'server-icon.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function resetConverter() {
+      currentImage = null;
+      fileInput.value = '';
+      workspace.style.display = 'none';
+      dropZone.style.display = 'block';
+    }
+  </script>
+</body>
+    </html>
+  
