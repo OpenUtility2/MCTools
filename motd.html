@@ -11,24 +11,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
-    /* Minecraft Dark-Purple & Dark-Blue Theme */
+    /* Minecraft Dark-Green & Emerald Theme */
     :root {
-      --mc-purple-bg: #12081f;
-      --mc-purple-dark: #1b0e2d;
-      --mc-panel-bg: #1a102a;
-      --mc-blue-accent: #2b3a67;
-      --mc-blue-dark: #1a2035;
+      --mc-green-bg: #09170a;
+      --mc-green-dark: #0f2411;
+      --mc-panel-bg: #122c15;
+      --mc-green-accent: #2e7d32;
+      --mc-green-light: #55ff55;
+      --mc-green-border: #1b5e20;
       --mc-white: #ffffff;
-      --mc-border: #3d2856;
+      --mc-border: #235127;
       --mc-text: #ffffff;
-      --mc-subtext: #b8a8d0;
+      --mc-subtext: #a3d9a5;
     }
 
     body {
-      background-color: var(--mc-purple-bg);
+      background-color: var(--mc-green-bg);
       color: var(--mc-text);
       font-family: 'Inter', sans-serif;
-      background-image: radial-gradient(#25143a 15%, transparent 16%), radial-gradient(#1d0e30 15%, transparent 16%);
+      background-image: radial-gradient(#153317 15%, transparent 16%), radial-gradient(#112813 15%, transparent 16%);
       background-size: 30px 30px;
       background-position: 0 0, 15px 15px;
     }
@@ -39,8 +40,8 @@
     }
 
     .site-header {
-      background: var(--mc-purple-dark);
-      border-bottom: 4px solid var(--mc-blue-accent);
+      background: var(--mc-green-dark);
+      border-bottom: 4px solid var(--mc-green-accent);
       box-shadow: 0 4px 0 #000000;
     }
 
@@ -73,22 +74,22 @@
     }
 
     .btn-primary {
-      background-color: var(--mc-blue-accent);
+      background-color: var(--mc-green-accent);
       color: #fff;
     }
 
     .btn-primary:hover {
-      background-color: #3b4e8c;
+      background-color: #388e3c;
       color: #fff;
     }
 
     .btn-secondary {
-      background-color: #432e5c;
+      background-color: #1b5e20;
       color: #fff;
     }
 
     .btn-secondary:hover {
-      background-color: #593e7a;
+      background-color: #237229;
     }
 
     .btn-sm {
@@ -124,6 +125,7 @@
     .tool-page-header h1 {
       font-size: clamp(1.3rem, 2.5vw, 1.8rem);
       margin-top: 0.5rem;
+      color: #55ff55;
     }
 
     .tool-page-header p {
@@ -174,7 +176,7 @@
 
     .form-textarea {
       width: 100%;
-      background: var(--mc-purple-dark);
+      background: var(--mc-green-dark);
       border: 2px solid var(--mc-border);
       border-radius: 0;
       padding: 0.75rem;
@@ -190,7 +192,7 @@
 
     .form-textarea:focus {
       outline: none;
-      border-color: var(--mc-blue-accent);
+      border-color: var(--mc-green-light);
     }
 
     .color-palette {
@@ -228,7 +230,7 @@
 
     .format-chip {
       padding: 0.4rem 0.8rem;
-      background: var(--mc-purple-dark);
+      background: var(--mc-green-dark);
       border: 2px solid var(--mc-border);
       border-radius: 0;
       font-size: 0.85rem;
@@ -242,12 +244,12 @@
     }
 
     .format-chip:hover {
-      border-color: var(--mc-blue-accent);
-      background: var(--mc-blue-dark);
+      border-color: var(--mc-green-light);
+      background: #183e1b;
     }
 
     .code-output {
-      background: var(--mc-purple-dark);
+      background: var(--mc-green-dark);
       border: 2px solid var(--mc-border);
       border-radius: 0;
       padding: 1rem;
@@ -268,7 +270,7 @@
     }
 
     .server-list-preview {
-      background: #25143a;
+      background: #0d210f;
       border: 3px solid #000;
       border-radius: 0;
       overflow: hidden;
@@ -277,7 +279,7 @@
     }
 
     .server-list-header {
-      background: var(--mc-purple-dark);
+      background: var(--mc-green-dark);
       padding: 0.6rem 1rem;
       color: #fff;
       font-family: 'Press Start 2P', monospace;
@@ -290,12 +292,12 @@
     }
 
     .server-list-item {
-      background: #11071c;
+      background: #061107;
       padding: 0.75rem 1rem;
     }
 
     .server-list-item-inner {
-      background: #1b0e2d;
+      background: #0f2411;
       border: 2px solid var(--mc-border);
       padding: 0.75rem;
       display: flex;
@@ -325,11 +327,11 @@
       color: var(--mc-white);
     }
 
-    /* Custom MCTools Footer Layout */
+    /* Custom MCTools Green Footer Layout */
     .site-footer {
-      background-color: #160e2a;
-      border-top: 1px solid #2d1d47;
-      color: #bfaedc;
+      background-color: #071208;
+      border-top: 1px solid #1a3f1d;
+      color: #a3d9a5;
       padding: 3rem 1rem 2rem 1rem;
       text-align: center;
       font-family: 'Press Start 2P', monospace;
@@ -346,7 +348,7 @@
 
     .footer-title {
       font-size: 2rem;
-      color: #b39ddb;
+      color: #55ff55;
       margin: 0;
       letter-spacing: 1px;
       display: flex;
@@ -364,7 +366,7 @@
 
     .footer-socials a {
       color: #ffffff;
-      background: #1a2035;
+      background: #112813;
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -378,7 +380,7 @@
     }
 
     .footer-socials a:hover {
-      background: var(--mc-blue-accent);
+      background: var(--mc-green-accent);
       transform: translateY(-2px);
     }
 
@@ -403,11 +405,11 @@
     }
 
     .footer-nav-inline .dot {
-      color: #7e689b;
+      color: #2b612e;
     }
 
     .openutility-ad-box {
-      border: 1px solid #7e689b;
+      border: 1px solid #235127;
       border-radius: 8px;
       padding: 6px 14px;
       display: inline-flex;
@@ -424,9 +426,9 @@
       top: -9px;
       left: 50%;
       transform: translateX(-50%);
-      background: #160e2a;
+      background: #071208;
       padding: 0 6px;
-      color: #bfaedc;
+      color: #a3d9a5;
       font-size: 0.55rem;
       white-space: nowrap;
     }
@@ -443,7 +445,7 @@
     }
 
     .openutility-icon {
-      background: #2b3a67;
+      background: #2e7d32;
       color: #fff;
       border-radius: 50%;
       width: 20px;
@@ -457,7 +459,7 @@
     .footer-disclaimer {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.6rem;
-      color: #8c7aa8;
+      color: #5b8c5e;
       line-height: 1.8;
       max-width: 650px;
       margin-top: 1rem;
