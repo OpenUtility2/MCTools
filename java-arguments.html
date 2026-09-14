@@ -7,14 +7,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --mc-bg: #0c1017;
-      --mc-panel-bg: #121824;
-      --mc-panel-header: #182030;
-      --mc-accent: #00ffaa;
-      --mc-accent-hover: #00cc88;
-      --mc-border: #1e293b;
-      --mc-text: #f8fafc;
-      --mc-subtext: #94a3b8;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #334155;
+      --accent: #06b6d4;
+      --accent-hover: #0891b2;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #0e7490;
+      --code-bg: #082f49;
     }
 
     * {
@@ -139,6 +140,7 @@
     .preset-card:hover, .preset-card.active {
       border-color: var(--accent);
       background: var(--bg-card);
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
     }
 
     .preset-card i {
@@ -203,6 +205,7 @@
 
     .slider-container input[type="range"] {
       flex: 1;
+      accent-color: var(--accent);
     }
 
     .ram-val {
@@ -221,7 +224,7 @@
       line-height: 1.5;
       word-break: break-all;
       margin-bottom: 1rem;
-      color: #7dd3fc;
+      color: #67e8f9;
       white-space: pre-wrap;
     }
 
@@ -254,6 +257,7 @@
     .btn-secondary {
       background: var(--bg-card);
       color: var(--text-main);
+      border: 1px solid var(--border-color);
     }
 
     .btn-secondary:hover {
@@ -583,7 +587,7 @@
             versionSelect.appendChild(opt);
           });
 
-          versionStatus.innerHTML = `<i class="fas fa-check-circle" style="color: #4caf50;"></i> Loaded ${releaseVersions.length} release versions`;
+          versionStatus.innerHTML = `<i class="fas fa-check-circle" style="color: #06b6d4;"></i> Loaded ${releaseVersions.length} release versions`;
         } catch (error) {
           console.error('Error loading versions:', error);
           versionSelect.innerHTML = `
@@ -595,7 +599,7 @@
             <option value="1.12.2">Minecraft 1.12.2</option>
             <option value="1.8.9">Minecraft 1.8.9</option>
           `;
-          versionStatus.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i> Offline mode: loaded fallback versions`;
+          versionStatus.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i> Offline mode: loaded fallback versions`;
         } finally {
           if (versionSpinner) versionSpinner.style.display = 'none';
           autoDetectJava();
