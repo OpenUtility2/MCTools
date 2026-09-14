@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Ensures proper responsive scale on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Primary SEO Meta Tags -->
@@ -34,6 +33,7 @@
       --text-muted: #8fa8a1;
       --border-color: #00e599;
       --border-subtle: #1b333a;
+      --danger: #ef4444;
     }
 
     *, *::before, *::after {
@@ -45,7 +45,7 @@
     html, body {
       width: 100%;
       max-width: 100%;
-      overflow-x: hidden; /* Prevents unwanted horizontal desktop scrolling */
+      overflow-x: hidden;
     }
 
     body {
@@ -58,7 +58,6 @@
       position: relative;
     }
 
-    /* Starfall Background Overlay */
     .starfall-container {
       position: absolute;
       top: 0;
@@ -142,6 +141,11 @@
       font-size: 0.85rem;
       font-weight: 500;
       margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
     }
 
     .section-title {
@@ -166,10 +170,39 @@
       margin-top: 1.5rem;
     }
 
+    /* Platform Switcher Tabs */
+    .platform-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: bold;
+    }
+
     .input-group {
       display: flex;
       gap: 10px;
-      margin-top: 12px;
+      margin-top: 8px;
       width: 100%;
     }
 
@@ -184,6 +217,11 @@
       color: #fff;
       font-size: 0.9rem;
       outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
     }
 
     .btn {
@@ -199,12 +237,36 @@
       justify-content: center;
       gap: 8px;
       white-space: nowrap;
+      transition: all 0.2s ease;
     }
 
     .btn-primary {
       background-color: var(--accent);
       color: #000000;
       box-shadow: 0 4px 0 #009966;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.55rem;
+      padding: 8px 12px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .presets {
@@ -230,6 +292,35 @@
       padding: 6px 10px;
       font-size: 0.75rem;
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .loader {
+      display: none;
+      text-align: center;
+      color: var(--accent);
+      padding: 24px 0;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      line-height: 1.8;
+    }
+
+    .error-banner {
+      display: none;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 14px;
+      border-radius: 6px;
+      margin-top: 20px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      line-height: 1.6;
     }
 
     .result-box {
@@ -237,8 +328,14 @@
       background: var(--bg-primary);
       border: 1px solid var(--border-subtle);
       border-radius: 6px;
-      padding: 1rem;
+      padding: 1.2rem;
       margin-top: 20px;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .status-header {
@@ -259,11 +356,13 @@
     }
 
     .server-icon {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       background: #000;
       border: 1px solid var(--border-subtle);
+      border-radius: 4px;
       object-fit: contain;
+      image-rendering: pixelated;
     }
 
     .badge {
@@ -280,6 +379,12 @@
       background: rgba(0, 229, 153, 0.15);
       color: var(--accent);
       border: 1px solid var(--accent);
+    }
+
+    .offline {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
+      border: 1px solid var(--danger);
     }
 
     .info-grid {
@@ -309,17 +414,60 @@
       word-break: break-all;
     }
 
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 3px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
     .motd-box {
       background: #000000;
       border: 1px solid var(--border-subtle);
       border-radius: 4px;
       padding: 12px;
       font-family: 'VT323', monospace;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       color: #ffffff;
       white-space: pre-wrap;
       word-break: break-word;
       min-height: 50px;
+      line-height: 1.3;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    /* Toast Notification System */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: #000;
+      padding: 12px 18px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
 
     .site-footer {
@@ -364,7 +512,6 @@
       text-decoration: none;
     }
 
-    /* Mobile Specific Layout Modifications */
     @media (max-width: 600px) {
       .checker-card {
         padding: 1rem;
@@ -403,7 +550,6 @@
 </head>
 <body>
 
-  <!-- Animated Starfall Background -->
   <div class="starfall-container" id="starfall"></div>
 
   <header class="site-header">
@@ -420,10 +566,15 @@
 
       <div class="section-header">
         <h1 class="section-title">Server Status Checker</h1>
-        <p class="section-subtitle">Check real-time status, live player counts, and MOTD of any Minecraft server.</p>
+        <p class="section-subtitle">Check real-time status, live player counts, and colored MOTD of Java or Bedrock servers.</p>
       </div>
 
       <div class="checker-card">
+        <div class="platform-tabs">
+          <button class="tab-btn active" id="tabJava" onclick="setPlatform('java')"><i class="fas fa-desktop"></i> Java Edition</button>
+          <button class="tab-btn" id="tabBedrock" onclick="setPlatform('bedrock')"><i class="fas fa-mobile-alt"></i> Bedrock / PE</button>
+        </div>
+
         <label for="serverIp" style="font-weight: 600; color: #f1f5f9; font-size: 0.65rem; font-family: 'Press Start 2P', monospace;">Enter Server IP Address</label>
         <div class="input-group">
           <input type="text" id="serverIp" placeholder="e.g. play.hypixel.net" onkeydown="if(event.key==='Enter') checkStatus()" />
@@ -432,10 +583,16 @@
 
         <div class="presets">
           <span class="preset-label">Presets:</span>
-          <button class="preset-btn" onclick="quickCheck('mc.hypixel.net')">Hypixel</button>
-          <button class="preset-btn" onclick="quickCheck('top.jartex.fun')">Jartex</button>
-          <button class="preset-btn" onclick="quickCheck('play.minemen.club')">Minemen</button>
+          <button class="preset-btn" onclick="quickCheck('mc.hypixel.net', 'java')">Hypixel</button>
+          <button class="preset-btn" onclick="quickCheck('top.jartex.fun', 'java')">Jartex</button>
+          <button class="preset-btn" onclick="quickCheck('play.nethergames.org', 'bedrock')">NetherGames (PE)</button>
         </div>
+
+        <div class="loader" id="loader">
+          <i class="fas fa-spinner fa-spin"></i> PINGING SERVER... PLEASE WAIT
+        </div>
+
+        <div class="error-banner" id="errorBanner"></div>
 
         <div class="result-box" id="resultCard">
           <div class="status-header">
@@ -448,8 +605,8 @@
             </div>
 
             <div>
-              <button class="btn btn-secondary" onclick="copyIp()"><i class="fas fa-copy"></i> Copy</button>
-              <button class="btn btn-secondary" onclick="checkStatus()"><i class="fas fa-sync"></i> Refresh</button>
+              <button class="btn btn-secondary" onclick="copyIp()"><i class="fas fa-copy"></i> Copy IP</button>
+              <button class="btn btn-secondary" onclick="checkStatus(true)"><i class="fas fa-sync"></i> Refresh</button>
             </div>
           </div>
 
@@ -457,21 +614,30 @@
             <div class="info-box">
               <div class="info-label">Live Players</div>
               <div class="info-value" id="playerCount">-</div>
+              <div class="progress-bar-container">
+                <div class="progress-bar" id="playerBar"></div>
+              </div>
             </div>
             <div class="info-box">
               <div class="info-label">Version</div>
               <div class="info-value" id="serverVersion">-</div>
             </div>
+            <div class="info-box">
+              <div class="info-label">IP / Port</div>
+              <div class="info-value" id="serverAddressDisplay">-</div>
+            </div>
           </div>
 
           <div class="motd-container">
-            <div class="info-label" style="margin-bottom: 6px;">MOTD</div>
+            <div class="info-label" style="margin-bottom: 6px;">Server MOTD</div>
             <div class="motd-box" id="serverMotd">-</div>
           </div>
         </div>
       </div>
     </section>
   </main>
+
+  <div class="toast" id="toast">Copied IP to clipboard!</div>
 
   <footer class="site-footer">
     <div class="footer-container">
@@ -485,11 +651,13 @@
   </footer>
 
   <script>
+    const DEFAULT_ICON = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 16 16"><rect width="16" height="16" fill="%2315252c"/><rect x="0" y="0" width="16" height="4" fill="%2300e599"/><rect x="0" y="4" width="16" height="2" fill="%2300b87a"/></svg>';
+    let currentPlatform = 'java';
+
+    // Particle Stars
     document.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('starfall');
-      const starCount = 25;
-
-      for (let i = 0; i < starCount; i++) {
+      for (let i = 0; i < 25; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
         star.style.width = `${Math.random() * 2 + 1}px`;
@@ -501,22 +669,154 @@
       }
     });
 
-    function quickCheck(ip) {
-      document.getElementById('serverIp').value = ip;
+    function setPlatform(platform) {
+      currentPlatform = platform;
+      document.getElementById('tabJava').classList.toggle('active', platform === 'java');
+      document.getElementById('tabBedrock').classList.toggle('active', platform === 'bedrock');
     }
 
-    function checkStatus() {
-      document.getElementById('resultCard').style.display = 'block';
-      document.getElementById('serverHost').innerText = document.getElementById('serverIp').value || 'mc.hypixel.net';
-      document.getElementById('playerCount').innerText = '12,450 / 200,000';
-      document.getElementById('serverVersion').innerText = '1.8.x - 1.20.x';
-      document.getElementById('serverMotd').innerText = 'Welcome to the Server!';
+    function quickCheck(ip, platform) {
+      setPlatform(platform);
+      document.getElementById('serverIp').value = ip;
+      checkStatus();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
     function copyIp() {
-      const ip = document.getElementById('serverIp').value || 'mc.hypixel.net';
-      navigator.clipboard.writeText(ip);
-      alert(`Copied IP: ${ip}`);
+      const ip = document.getElementById('serverIp').value.trim();
+      if (!ip) return;
+      navigator.clipboard.writeText(ip).then(() => showToast('Copied IP to clipboard!'));
+    }
+
+    function sanitizeIp(rawIp) {
+      return rawIp.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').trim();
+    }
+
+    // Color Code Parser for MOTD
+    const MC_COLORS = {
+      '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
+      '4': '#AA0000', '5': '#AA00AA', '6': '#FFAA00', '7': '#AAAAAA',
+      '8': '#555555', '9': '#5555FF', 'a': '#55FF55', 'b': '#55FFFF',
+      'c': '#FF5555', 'd': '#FF55FF', 'e': '#FFFF55', 'f': '#FFFFFF'
+    };
+
+    function parseMotd(motdData) {
+      if (!motdData) return 'No MOTD provided.';
+      if (typeof motdData === 'string') return parseLegacyCodes(motdData);
+      if (motdData.html) return motdData.html;
+      if (motdData.clean) return parseLegacyCodes(motdData.clean.join('\n'));
+      if (motdData.raw) return parseLegacyCodes(motdData.raw.join('\n'));
+      return 'Minecraft Server';
+    }
+
+    function parseLegacyCodes(str) {
+      let parts = str.split('§');
+      let html = parts[0];
+      for (let i = 1; i < parts.length; i++) {
+        let code = parts[i].charAt(0).toLowerCase();
+        let text = parts[i].slice(1);
+        if (MC_COLORS[code]) {
+          html += `<span style="color:${MC_COLORS[code]}">${text}</span>`;
+        } else {
+          html += text;
+        }
+      }
+      return html;
+    }
+
+    async function checkStatus(forceRefresh = false) {
+      const rawIp = document.getElementById('serverIp').value;
+      const cleanIp = sanitizeIp(rawIp);
+
+      const loader = document.getElementById('loader');
+      const errorBanner = document.getElementById('errorBanner');
+      const resultCard = document.getElementById('resultCard');
+
+      if (!cleanIp) {
+        errorBanner.innerText = 'ERROR: PLEASE ENTER A VALID SERVER IP ADDRESS.';
+        errorBanner.style.display = 'block';
+        resultCard.style.display = 'none';
+        return;
+      }
+
+      // 15s Client-Side Session Storage Cache
+      const cacheKey = `mc_status_${currentPlatform}_${cleanIp}`;
+      const cached = sessionStorage.getItem(cacheKey);
+      
+      if (cached && !forceRefresh) {
+        const { timestamp, data } = JSON.parse(cached);
+        if (Date.now() - timestamp < 15000) {
+          renderData(cleanIp, data);
+          return;
+        }
+      }
+
+      loader.style.display = 'block';
+      errorBanner.style.display = 'none';
+      resultCard.style.display = 'none';
+
+      try {
+        const endpoint = currentPlatform === 'bedrock' 
+          ? `https://api.mcsrvstat.us/bedrock/3/${cleanIp}` 
+          : `https://api.mcsrvstat.us/3/${cleanIp}`;
+
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error('API unreachable');
+        const data = await res.json();
+
+        // Save Cache
+        sessionStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
+        
+        renderData(cleanIp, data);
+      } catch (err) {
+        loader.style.display = 'none';
+        errorBanner.innerText = 'ERROR: UNABLE TO FETCH SERVER DATA. CHECK IP OR TRY AGAIN.';
+        errorBanner.style.display = 'block';
+      }
+    }
+
+    function renderData(cleanIp, data) {
+      document.getElementById('loader').style.display = 'none';
+      const resultCard = document.getElementById('resultCard');
+      const errorBanner = document.getElementById('errorBanner');
+
+      if (!data || !data.online) {
+        errorBanner.innerText = `SERVER "${cleanIp.toUpperCase()}" IS OFFLINE OR UNREACHABLE.`;
+        errorBanner.style.display = 'block';
+        resultCard.style.display = 'none';
+        return;
+      }
+
+      errorBanner.style.display = 'none';
+      resultCard.style.display = 'block';
+
+      // Icon
+      const iconImg = document.getElementById('serverIcon');
+      iconImg.src = data.icon ? data.icon : DEFAULT_ICON;
+
+      // Header Info
+      document.getElementById('serverHost').innerText = data.hostname || cleanIp;
+      document.getElementById('serverAddressDisplay').innerText = `${data.ip}:${data.port}`;
+
+      // Version
+      document.getElementById('serverVersion').innerText = data.version || 'Unknown';
+
+      // Players & Progress
+      const onlinePlayers = data.players ? (data.players.online || 0) : 0;
+      const maxPlayers = data.players ? (data.players.max || 0) : 0;
+      document.getElementById('playerCount').innerText = `${onlinePlayers.toLocaleString()} / ${maxPlayers.toLocaleString()}`;
+      
+      const fillPercent = maxPlayers > 0 ? Math.min(100, (onlinePlayers / maxPlayers) * 100) : 0;
+      document.getElementById('playerBar').style.width = `${fillPercent}%`;
+
+      // MOTD Parsing
+      document.getElementById('serverMotd').innerHTML = parseMotd(data.motd);
     }
   </script>
 
