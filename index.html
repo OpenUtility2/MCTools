@@ -84,6 +84,12 @@
       --mc-teal-glow: rgba(0, 230, 168, 0.4);
     }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       background-color: var(--mc-bg);
       color: var(--mc-text);
@@ -91,11 +97,24 @@
       background-image: radial-gradient(#1c2b29 15%, transparent 16%), radial-gradient(#14201e 15%, transparent 16%);
       background-size: 30px 30px;
       background-position: 0 0, 15px 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
     }
 
     h1, h2, h3, h4, .logo {
       font-family: 'Press Start 2P', monospace;
       letter-spacing: -0.5px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
     }
 
     /* ENHANCED POLISHED HEADER */
@@ -141,6 +160,32 @@
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
     }
 
+    .nav-links {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--mc-text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--mc-accent);
+    }
+
+    .nav-cta {
+      background: var(--mc-accent-dark);
+      border: 1px solid var(--mc-accent);
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
     /* Mobile Nav Toggle Icon */
     .mobile-nav-toggle {
       background: rgba(0, 230, 168, 0.08);
@@ -148,7 +193,7 @@
       color: var(--mc-accent);
       padding: 8px 10px;
       cursor: pointer;
-      display: flex;
+      display: none;
       flex-direction: column;
       gap: 4px;
       border-radius: 4px;
@@ -169,6 +214,53 @@
       box-shadow: 0 0 5px var(--mc-teal-glow);
     }
 
+    .mobile-nav-menu {
+      display: none;
+      flex-direction: column;
+      background-color: var(--mc-panel-bg);
+      border-bottom: 2px solid var(--mc-accent);
+      padding: 1rem;
+      gap: 0.75rem;
+    }
+
+    .mobile-nav-menu.is-active {
+      display: flex;
+    }
+
+    .mobile-nav-menu a {
+      color: var(--mc-text);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .mobile-nav-menu a:hover {
+      background: rgba(0, 230, 168, 0.1);
+      color: var(--mc-accent);
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+    }
+
+    .hero h1 {
+      font-size: 1.5rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      color: var(--mc-white);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--mc-subtext);
+      max-width: 650px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
     .btn {
       font-family: 'Press Start 2P', monospace;
       font-size: 0.75rem;
@@ -179,6 +271,8 @@
       padding: 12px 18px;
       transition: all 0.1s ease;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .btn-primary {
@@ -192,20 +286,114 @@
       color: #0d1117;
     }
 
+    .btn-secondary {
+      background-color: #233534;
+      color: var(--mc-white);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--mc-accent-dark);
+      color: var(--mc-accent);
+    }
+
+    .btn-sm {
+      font-size: 0.65rem;
+      padding: 8px 12px;
+    }
+
+    /* Layout Sections */
+    .section {
+      padding: 3rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-subtitle {
+      color: var(--mc-subtext);
+      font-size: 0.95rem;
+    }
+
+    /* Cards & Grids */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
     .card, .feature-card, .about-section {
       background-color: var(--mc-panel-bg);
       border: 3px solid #000;
       outline: 2px solid var(--mc-border);
       box-shadow: 6px 6px 0px #000000;
       border-radius: 0;
+      padding: 1.5rem;
     }
 
-    .card-title, .feature-title, .section-title {
+    .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-title, .feature-title {
       color: var(--mc-white);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
     }
 
-    .card-icon, .feature-icon, .logo-icon {
+    .card-description, .feature-desc {
+      color: var(--mc-subtext);
+      font-size: 0.875rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .feature-card {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.25rem;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
       color: var(--mc-accent);
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content p {
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+      color: var(--mc-subtext);
+    }
+
+    .about-content .btn {
+      margin-top: 1rem;
     }
 
     /* CUSTOM ANIMATED TOOLS ICONS Styles */
@@ -315,6 +503,7 @@
       padding: 3rem 1rem 2rem 1rem;
       text-align: center;
       font-family: 'Press Start 2P', monospace;
+      margin-top: 2rem;
     }
 
     .footer-container {
@@ -327,7 +516,7 @@
     }
 
     .footer-title {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: var(--mc-accent);
       margin: 0;
       letter-spacing: 1px;
@@ -371,7 +560,7 @@
       justify-content: center;
       align-items: center;
       gap: 0.8rem;
-      font-size: 1rem;
+      font-size: 0.7rem;
       color: #e0e0e0;
     }
 
@@ -388,6 +577,20 @@
 
     .footer-nav-inline .dot {
       color: var(--mc-border);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-nav-toggle {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -411,7 +614,7 @@
         </button>
       </nav>
     </div>
-    <div class="mobile-nav-menu">
+    <div class="mobile-nav-menu" id="mobileNavMenu">
       <a href="/"><i class="fas fa-home"></i> Home</a>
       <a href="/#tools"><i class="fas fa-tools"></i> Tools</a>
       <a href="/#about"><i class="fas fa-info-circle"></i> About</a>
@@ -547,16 +750,26 @@
       <div class="footer-nav-inline">
         <span>&copy; 2026 MCTools</span>
         <span class="dot">&bull;</span>
-        <a href="#">Privacy</a>
+        <a href="/privacy">Privacy Policy</a>
         <span class="dot">&bull;</span>
-        <a href="#">Terms</a>
-      </div>
-
-      <div class="footer-nav-inline">
-        <a href="/#about">About</a>
-        <span class="dot">&bull;</span>
+        <a href="/terms">Terms of Service</a>
       </div>
     </div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      const mobileMenu = document.getElementById('mobileNavMenu');
+
+      if (toggleBtn && mobileMenu) {
+        toggleBtn.addEventListener('click', () => {
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+          toggleBtn.setAttribute('aria-expanded', !isExpanded);
+          mobileMenu.classList.toggle('is-active');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
